@@ -291,6 +291,7 @@ height: 286px;
     font-size: 29px;
     font-weight:bold;
     color:#fff;
+    text-align: center;
 }
 
 .date {
@@ -585,13 +586,20 @@ width: 450px;
     flex-direction: row;
 }
 
-.location-and-date {
-    justify-content: center;
-    margin-right: 180px;
-    align-items: start;
+.location {
+     text-align: left;
 }
 
+.location-and-date {
+    justify-content: center;
+    
+    align-items: start;
 
+}
+
+.weather-symbol-and-temp {
+    margin-right: 30px;
+}
 
 .daily-forecast {
     grid-row: 3 / span 1;

@@ -1,6 +1,7 @@
+import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { Dropdown} from "./utilities/dropDown.js";
 const dropDown = new Dropdown();
- import { getGeoData, retrieveCoordinates } from "./data/weatherData.js";
+ import { getGeoData, retrieveCoordinates, getWeatherData } from "./data/weatherData.js";
 
 // unitsMenu functionality
 const dropDownIcon = document.querySelector(".units-button");
@@ -56,12 +57,33 @@ hourlyChoices.forEach((hourlyChoice)=>{
     })
 })
 
+// load data to  page
+const mainLocation = document.querySelector(".location");
+const dateContainer = document.querySelector(".date");
+const currentTemp = document.querySelector(".temp");
+const feelsLike = document.querySelector(".js-current-temp");
+const currentHumidity = document.querySelector(".js-current-humidity");
+const currentPrecipitation =document.querySelector(".js-current-precipitation");
+const currentWindSpeed = document.querySelector(".js-current-wind-speed");
+const today = dayjs();
+dateContainer.innerHTML = today.format('dddd, MMMM D YYYY');
+function loadDataToView(geoCoordinatesInput, weatherDataInput) {
+    mainLocation.innerHTML = geoCoordinatesInput.results[0].name + ", "+ geoCoordinatesInput.results[0].country;
+    console.log(geoCoordinatesInput.results[0].name)
+    currentTemp.innerHTML =Math.round(weatherDataInput.daily.temperature_2m_max[0])+"°";
+    feelsLike.innerHTML = Math.round(weatherDataInput.current.temperature_2m)+"°";
+    currentHumidity.innerHTML = Math.round(weatherDataInput.current.relative_humidity_2m) + "%";
+    currentWindSpeed.innerHTML = Math.round(weatherDataInput.current.wind_speed_10m) + " km/hr";
+    currentPrecipitation.innerHTML = Math.round(weatherDataInput.current.precipitation) + " mm";
+}
+
 // search bar functionaluity
 
 const searchBar = document.querySelector("#search-bar");
 
 const recentSearches = document.querySelector(".recent-searches");
-const searchButton = document.querySelector("#search-button")
+const searchButton = document.querySelector("#search-button");
+  const weatherLocationData = {};
 searchBar.addEventListener("click", ()=>{
     dropDown.isStillFocusing(searchBar, recentSearches);
 })
@@ -78,7 +100,10 @@ searchBar.addEventListener("keydown", async (event)=>{
     const searchValue = searchBar.value;
 if (event.code == "Enter") {
     console.log("hi");
-  await  retrieveCoordinates(searchValue);
+  const geoCoordinates = await  retrieveCoordinates(searchValue);
+  const weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude);
+  console.log(weatherLocationData);
+    loadDataToView(geoCoordinates, weatherLocationData);
 }
 })
 
@@ -86,8 +111,10 @@ searchButton.addEventListener("click", async ()=>{
     const searchValue = searchBar.value;
 
     console.log("this is")
-    await  retrieveCoordinates(searchValue);
-
+     const geoCoordinates = await  retrieveCoordinates(searchValue);
+    const weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude);
+  console.log(weatherLocationData);
+  loadDataToView(geoCoordinates, weatherLocationData);
 })
 
 // body event listener
