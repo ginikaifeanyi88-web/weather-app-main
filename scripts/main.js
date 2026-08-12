@@ -1,13 +1,6 @@
-import { isStillHovering, isStillFocusing} from "./utilities/dropDown.js";
-
-// function isStillHovering() {
-//        if (unitsMenu.matches(':hover')) {
-//          unitsMenu.style.display ="block";
-//     console.log("hi") 
-//     } else{
-//     unitsMenu.style.display ="";
-//     }
-// }
+import { Dropdown} from "./utilities/dropDown.js";
+const dropDown = new Dropdown();
+ import { getGeoData, retrieveCoordinates } from "./data/weatherData.js";
 
 // unitsMenu functionality
 const dropDownIcon = document.querySelector(".units-button");
@@ -22,11 +15,11 @@ dropDownIcon.addEventListener("click", ()=>{
 })
 
 dropDownIcon.addEventListener("mouseout", ()=>{
-   setTimeout(isStillHovering(unitsMenu, dropDownIcon),1000);
+   setTimeout(dropDown.isStillHovering(unitsMenu, dropDownIcon),1000);
 })
 
 unitsMenu.addEventListener("mouseout", ()=>{
-    setTimeout(isStillHovering(unitsMenu, dropDownIcon),1000);
+    setTimeout(dropDown.isStillHovering(unitsMenu, dropDownIcon),1000);
 })
 
 unitChoices.forEach((unitChoice)=>{
@@ -50,11 +43,11 @@ hourlyDropDown.addEventListener("click", ()=>{
 })
 
 hourlyDropDown.addEventListener("mouseout", ()=>{
-   setTimeout(isStillHovering(hourlyMenu, hourlyDropDown),2000);
+   setTimeout(dropDown.isStillHovering(hourlyMenu, hourlyDropDown),2000);
 })
 
 hourlyMenu.addEventListener("mouseout", ()=>{
-    setTimeout(isStillHovering(hourlyMenu, hourlyDropDown),2000);
+    setTimeout(dropDown.isStillHovering(hourlyMenu, hourlyDropDown),2000);
 })
 
 hourlyChoices.forEach((hourlyChoice)=>{
@@ -66,9 +59,11 @@ hourlyChoices.forEach((hourlyChoice)=>{
 // search bar functionaluity
 
 const searchBar = document.querySelector("#search-bar");
+
 const recentSearches = document.querySelector(".recent-searches");
+const searchButton = document.querySelector("#search-button")
 searchBar.addEventListener("click", ()=>{
-    isStillFocusing(searchBar, recentSearches);
+    dropDown.isStillFocusing(searchBar, recentSearches);
 })
 
 const recentSearchOptions = document.querySelectorAll(".recent-search");
@@ -77,6 +72,22 @@ recentSearchOptions.forEach((recentSearchOption)=>{
         console.log("scooby dooby doo")
         recentSearches.style.display = "none";
     })
+})
+
+searchBar.addEventListener("keydown", async (event)=>{
+    const searchValue = searchBar.value;
+if (event.code == "Enter") {
+    console.log("hi");
+  await  retrieveCoordinates(searchValue);
+}
+})
+
+searchButton.addEventListener("click", async ()=>{
+    const searchValue = searchBar.value;
+
+    console.log("this is")
+    await  retrieveCoordinates(searchValue);
+
 })
 
 // body event listener
@@ -91,4 +102,5 @@ body.addEventListener("click", (event)=>{
     hourlyMenu.style.display ="none";
     }
 })
+
 
