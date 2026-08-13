@@ -142,6 +142,30 @@ hourlyMenu.addEventListener("mouseout", ()=>{
     setTimeout(dropDown.isStillHovering(hourlyMenu, hourlyDropDown),2000);
 })
 
+// generate html for hourly forecast
+
+function generateHourlyHTML(hourlyTemps, hourlyCodes, startingPoint) {
+    let hourlHTML = ``;
+    for (let j=startingPoint;j<startingPoint+24;j++) {
+        let specificHour = "";
+        if (j == startingPoint) {
+            specificHour = "0 AM"
+        } else if (j == startingPoint+12) {
+            specificHour = "12 PM"
+        } else if (j > startingPoint && j < startingPoint+12) {
+            specificHour=  (j-startingPoint) + " AM";
+        } else if (j > startingPoint+ 12) {
+            specificHour = (j-(startingPoint+12))+ " PM";
+        }
+        hourlHTML += `  <div class="hourly-forecast-item">
+    <img src="assets/images/${findWeatherCode(hourlyCodes[j])}.webp" alt="hourly-forecast-img">
+    <p class="hour-of-day">${specificHour}</p>
+    <p class="hourly-temp">${Math.round(hourlyTemps[j])}°</p>
+  </div>`;
+    }
+    return hourlHTML;
+}
+
 // load data to  page
 const mainLocation = document.querySelector(".location");
 const dateContainer = document.querySelector(".date");
@@ -183,27 +207,11 @@ function loadDataToView(geoCoordinatesInput, weatherDataInput) {
   </div>`;
 
     }
-    let hourlHTML = ``;
+
     const hourlyTemps = weatherDataInput.hourly.temperature_2m;
     const hourlyCodes = weatherDataInput.hourly.weather_code;
-    for (let j=168;j<168+24;j++) {
-        let specificHour = "";
-        if (j == 168) {
-            specificHour = "0 AM"
-        } else if (j == 168+12) {
-            specificHour = "12 PM"
-        } else if (j > 168 && j < 168+12) {
-            specificHour=  (j-168) + " AM";
-        } else if (j > 168+ 12) {
-            specificHour = (j-(168+12))+ " PM";
-        }
-        hourlHTML += `  <div class="hourly-forecast-item">
-    <img src="assets/images/${findWeatherCode(hourlyCodes[j])}.webp" alt="hourly-forecast-img">
-    <p class="hour-of-day">${specificHour}</p>
-    <p class="hourly-temp">${Math.round(hourlyTemps[j])}°</p>
-  </div>`;
-    }
-    hourlyItems.innerHTML = hourlHTML;
+     hourlyItems.innerHTML = generateHourlyHTML(hourlyTemps, hourlyCodes, 168);
+
     dailyItems.innerHTML = dailyForecastHTML;
 
 }
@@ -250,34 +258,59 @@ searchButton.addEventListener("click", async ()=>{
 
 // day choice event listener
 
-
+let hourlyTempArray;
+let weatherCodeArray;
 for (let k=0;k<7;k++) {
     hourlyChoices[k].addEventListener("click", ()=>{
         let dayClicked = today.day(k+1)
         dayChose.innerHTML = dayClicked.format("dddd");
+        if (today.format("dddd") == "Monday") {
+            hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(168, 336);
+            weatherCodeArray = weatherLocationData.hourly.weather_code.slice(168, 336);
+            console.log(hourlyTempArray);
+        } else if (today.format("dddd") == "Tuesday") {
+            hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(144, (144+168));
+            weatherCodeArray = weatherLocationData.hourly.weather_code.slice(144, (144+168));
+            console.log(hourlyTempArray);
+        } else if (today.format("dddd") == "Wednesday") {
+             hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(120, (120+168));
+             weatherCodeArray = weatherLocationData.hourly.weather_code.slice(120, (120+168));
+            console.log(hourlyTempArray);
+        } else if  (today.format("dddd") == "Thursday") {
+            hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(96, (96+168));
+            weatherCodeArray = weatherLocationData.hourly.weather_code.slice(96, (96+168));
+            console.log(hourlyTempArray);
+            console.log(weatherCodeArray);
+        } else if  (today.format("dddd") == "Friday") {
+            hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(72, (72+168));
+            weatherCodeArray = weatherLocationData.hourly.weather_code.slice(72, (72+168));
+            console.log(hourlyTempArray);
+        } else if (today.format("dddd") == "Saturday")  {
+            hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(48, (48+168));
+            weatherCodeArray = weatherLocationData.hourly.weather_code.slice(48, (48+168));
+            console.log(hourlyTempArray);
+        } else if  (today.format("dddd") == "Sunday")  {
+            hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(24, (24+168));
+            weatherCodeArray = weatherLocationData.hourly.weather_code.slice(24, (24+168));
+            console.log(hourlyTempArray);
+        }
 
-       
-//             let hourlHTML = ``;
-//     const hourlyTemps = weatherDataInput.hourly.temperature_2m;
-//     const hourlyCodes = weatherDataInput.hourly.weather_code;
-//     for (let j=0;j<24;j++) {
-//         let specificHour = "";
-//         if (j == 0) {
-//             specificHour = "0 AM"
-//         } else if (j == 12) {
-//             specificHour = "12 PM"
-//         } else if (j > 0 && j < 12) {
-//             specificHour=  j + " AM";
-//         } else if (j > 12) {
-//             specificHour = (j-12)+ " PM";
-//         }
-//         hourlHTML += `  <div class="hourly-forecast-item">
-//     <img src="assets/images/${findWeatherCode(hourlyCodes[j])}.webp" alt="hourly-forecast-img">
-//     <p class="hour-of-day">${specificHour}</p>
-//     <p class="hourly-temp">${Math.round(hourlyTemps[j])}°</p>
-//   </div>`;
-//     }
-//     hourlyItems.innerHTML = hourlHTML;
+        if (dayChose.innerHTML=="Monday") {
+            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 0);
+        } else if (dayChose.innerHTML =="Tuesday"){
+            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 24);
+        } else if  (dayChose.innerHTML =="Wednesday"){
+            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 48);
+        } else if (dayChose.innerHTML=="Thursday"){
+            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 72);
+        } else if (dayChose.innerHTML=="Friday") {
+            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 96);
+        } else if (dayChose.innerHTML=="Saturday") {
+            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 120);
+        } else if  (dayChose.innerHTML=="Sunday") {
+            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 144);
+        } 
+
     })
 }
 
