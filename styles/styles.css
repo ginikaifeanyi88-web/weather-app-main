@@ -395,6 +395,7 @@ height: 286px;
     padding: 20px;
     overflow-y: scroll;
     max-height: 600px;
+    height: 300px;
 }
 .hourly-forecast-items {
   
@@ -453,7 +454,7 @@ height: 286px;
     width: 220px;
     z-index: 1;
    right: 30px;
-   top: 950px;
+   
 }
 
 .hourly-menu:hover{

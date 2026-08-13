@@ -142,12 +142,6 @@ hourlyMenu.addEventListener("mouseout", ()=>{
     setTimeout(dropDown.isStillHovering(hourlyMenu, hourlyDropDown),2000);
 })
 
-hourlyChoices.forEach((hourlyChoice)=>{
-    hourlyChoice.addEventListener("click", ()=>{
-        console.log("delo")
-    })
-})
-
 // load data to  page
 const mainLocation = document.querySelector(".location");
 const dateContainer = document.querySelector(".date");
@@ -166,8 +160,8 @@ dateContainer.innerHTML = today.format('dddd, MMMM D YYYY');
 function loadDataToView(geoCoordinatesInput, weatherDataInput) {
     mainLocation.innerHTML = geoCoordinatesInput.results[0].name + ", "+ geoCoordinatesInput.results[0].country;
     console.log(geoCoordinatesInput.results[0].name)
-    currentTemp.innerHTML =Math.round(weatherDataInput.daily.temperature_2m_max[0])+"°";
-    currentIcon.setAttribute("src", `/assets/images/${findWeatherCode(weatherDataInput.daily.weather_code[0])}.webp`);
+    currentTemp.innerHTML =Math.round(weatherDataInput.daily.temperature_2m_max[7])+"°";
+    currentIcon.setAttribute("src", `/assets/images/${findWeatherCode(weatherDataInput.daily.weather_code[7])}.webp`);
     feelsLike.innerHTML = Math.round(weatherDataInput.current.temperature_2m)+"°";
     currentHumidity.innerHTML = Math.round(weatherDataInput.current.relative_humidity_2m) + "%";
     currentWindSpeed.innerHTML = Math.round(weatherDataInput.current.wind_speed_10m) + " km/hr";
@@ -177,7 +171,7 @@ function loadDataToView(geoCoordinatesInput, weatherDataInput) {
      const dailyMinTemps = weatherDataInput.daily.temperature_2m_min;
      const theWeatherCode = weatherDataInput.daily.weather_code;
      
-    for (let i=0;i<7;i++) {
+    for (let i=7;i<14;i++) {
         let dayOfWeek = today.add(i, 'days');
         dailyForecastHTML += `<div class="daily-forecast-item">
     <p class="day-of-week">${dayOfWeek.format('ddd')}</p>
@@ -192,16 +186,16 @@ function loadDataToView(geoCoordinatesInput, weatherDataInput) {
     let hourlHTML = ``;
     const hourlyTemps = weatherDataInput.hourly.temperature_2m;
     const hourlyCodes = weatherDataInput.hourly.weather_code;
-    for (let j=0;j<24;j++) {
+    for (let j=168;j<168+24;j++) {
         let specificHour = "";
-        if (j == 0) {
+        if (j == 168) {
             specificHour = "0 AM"
-        } else if (j == 12) {
+        } else if (j == 168+12) {
             specificHour = "12 PM"
-        } else if (j > 0 && j < 12) {
-            specificHour=  j + " AM";
-        } else if (j > 12) {
-            specificHour = (j-12)+ " PM";
+        } else if (j > 168 && j < 168+12) {
+            specificHour=  (j-168) + " AM";
+        } else if (j > 168+ 12) {
+            specificHour = (j-(168+12))+ " PM";
         }
         hourlHTML += `  <div class="hourly-forecast-item">
     <img src="assets/images/${findWeatherCode(hourlyCodes[j])}.webp" alt="hourly-forecast-img">
@@ -220,7 +214,7 @@ const searchBar = document.querySelector("#search-bar");
 
 const recentSearches = document.querySelector(".recent-searches");
 const searchButton = document.querySelector("#search-button");
-  const weatherLocationData = {};
+  let weatherLocationData = {};
 searchBar.addEventListener("click", ()=>{
     dropDown.isStillFocusing(searchBar, recentSearches);
 })
@@ -238,7 +232,7 @@ searchBar.addEventListener("keydown", async (event)=>{
 if (event.code == "Enter") {
     console.log("hi");
   const geoCoordinates = await  retrieveCoordinates(searchValue);
-  const weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude);
+  weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 }
@@ -249,10 +243,44 @@ searchButton.addEventListener("click", async ()=>{
 
     console.log("this is")
      const geoCoordinates = await  retrieveCoordinates(searchValue);
-    const weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude);
+    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude);
   console.log(weatherLocationData);
   loadDataToView(geoCoordinates, weatherLocationData);
 })
+
+// day choice event listener
+
+
+for (let k=0;k<7;k++) {
+    hourlyChoices[k].addEventListener("click", ()=>{
+        let dayClicked = today.day(k+1)
+        dayChose.innerHTML = dayClicked.format("dddd");
+
+       
+//             let hourlHTML = ``;
+//     const hourlyTemps = weatherDataInput.hourly.temperature_2m;
+//     const hourlyCodes = weatherDataInput.hourly.weather_code;
+//     for (let j=0;j<24;j++) {
+//         let specificHour = "";
+//         if (j == 0) {
+//             specificHour = "0 AM"
+//         } else if (j == 12) {
+//             specificHour = "12 PM"
+//         } else if (j > 0 && j < 12) {
+//             specificHour=  j + " AM";
+//         } else if (j > 12) {
+//             specificHour = (j-12)+ " PM";
+//         }
+//         hourlHTML += `  <div class="hourly-forecast-item">
+//     <img src="assets/images/${findWeatherCode(hourlyCodes[j])}.webp" alt="hourly-forecast-img">
+//     <p class="hour-of-day">${specificHour}</p>
+//     <p class="hourly-temp">${Math.round(hourlyTemps[j])}°</p>
+//   </div>`;
+//     }
+//     hourlyItems.innerHTML = hourlHTML;
+    })
+}
+
 
 // body event listener
 
