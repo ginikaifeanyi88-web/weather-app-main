@@ -1,10 +1,10 @@
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { Dropdown} from "./utilities/dropDown.js";
-const dropDown = new Dropdown();
  import { getGeoData, retrieveCoordinates, getWeatherData } from "./data/weatherData.js";
  import { findWeatherCode, generateHourlyHTML, generateDailyHTML, generateHourlyAfterHtml} from './view/htmlGenerators.js';
 
 // unitsMenu functionality
+const dropDown = new Dropdown();
 const dropDownIcon = document.querySelector(".units-button");
 const unitsMenu = document.querySelector(".units-menu");
 const unitChoices = document.querySelectorAll(".unit-type-choice");
@@ -89,7 +89,7 @@ const searchBar = document.querySelector("#search-bar");
 const recentSearches = document.querySelector(".recent-searches");
 const searchButton = document.querySelector("#search-button");
   let weatherLocationData = {};
-  
+
 searchBar.addEventListener("click", ()=>{
     dropDown.isStillFocusing(searchBar, recentSearches);
 })
