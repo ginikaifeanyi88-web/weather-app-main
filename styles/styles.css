@@ -397,10 +397,7 @@ height: 286px;
     max-height: 600px;
     height: 300px;
 }
-.hourly-forecast-items {
-  
-    
-}
+
 .hourly-forecast::-webkit-scrollbar {
     display: none;
 }

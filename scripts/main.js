@@ -73,7 +73,7 @@ function loadDataToView(geoCoordinatesInput, weatherDataInput) {
     currentIcon.setAttribute("src", `/assets/images/${findWeatherCode(weatherDataInput.daily.weather_code[7])}.webp`);
     feelsLike.innerHTML = Math.round(weatherDataInput.current.temperature_2m)+"°";
     currentHumidity.innerHTML = Math.round(weatherDataInput.current.relative_humidity_2m) + "%";
-    currentWindSpeed.innerHTML = Math.round(weatherDataInput.current.wind_speed_10m) + " km/hr";
+    currentWindSpeed.innerHTML = Math.round(weatherDataInput.current.wind_speed_10m);
     currentPrecipitation.innerHTML = Math.round(weatherDataInput.current.precipitation) + " mm";
     const dailyMaxTemps = weatherDataInput.daily.temperature_2m_max;
      const dailyMinTemps = weatherDataInput.daily.temperature_2m_min;
@@ -89,6 +89,7 @@ const searchBar = document.querySelector("#search-bar");
 const recentSearches = document.querySelector(".recent-searches");
 const searchButton = document.querySelector("#search-button");
   let weatherLocationData = {};
+  let geoCoordinates = {};
 
 searchBar.addEventListener("click", ()=>{
     dropDown.isStillFocusing(searchBar, recentSearches);
@@ -104,10 +105,12 @@ recentSearchOptions.forEach((recentSearchOption)=>{
 
 searchBar.addEventListener("keydown", async (event)=>{
     const searchValue = searchBar.value;
+    let selectedTemp = localStorage.getItem("selectedTemp");
+    let selectedSpeed = localStorage.getItem("selectedSpeed");
 if (event.code == "Enter") {
     console.log("hi");
-  const geoCoordinates = await  retrieveCoordinates(searchValue);
-  weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude);
+  geoCoordinates = await  retrieveCoordinates(searchValue);
+  weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 }
@@ -115,10 +118,11 @@ if (event.code == "Enter") {
 
 searchButton.addEventListener("click", async ()=>{
     const searchValue = searchBar.value;
-
+    let selectedTemp = localStorage.getItem("selectedTemp");
+    let selectedSpeed = localStorage.getItem("selectedSpeed");
     console.log("this is")
      const geoCoordinates = await  retrieveCoordinates(searchValue);
-    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude);
+    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed);
   console.log(weatherLocationData);
   loadDataToView(geoCoordinates, weatherLocationData);
 })
@@ -144,4 +148,59 @@ body.addEventListener("click", (event)=>{
     }
 })
 
+// units event listeners
+const tempUnit = document.querySelector(".js-temp-celsius");
+const tempUnitCheck = document.querySelector(".js-temp-celsius-check");
+const tempUnitFahrenheit = document.querySelector(".js-temp-fahrenheit");
+const tempUnitCheckFarenheit = document.querySelector(".js-temp-fahrenheit-check");
+const windSpeedUnitKm = document.querySelector(".js-speed-km");
+const windSpeedUnitKmCheck = document.querySelector(".js-speed-km-check");
+const windSpeedUnitMiles= document.querySelector(".js-speed-miles");
+const windSpeedUnitMilesCheck = document.querySelector(".js-speed-miles-check");
 
+tempUnit.addEventListener("click", async ()=>{
+    tempUnitCheckFarenheit.style.visibility="hidden";
+    tempUnitCheck.style.visibility="visible";
+    localStorage.setItem("selectedTemp", "celsius");
+    let selectedTemp = localStorage.getItem("selectedTemp");
+    let selectedSpeed = localStorage.getItem("selectedSpeed");
+    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed);
+  console.log(weatherLocationData);
+    loadDataToView(geoCoordinates, weatherLocationData);
+
+})
+
+
+tempUnitFahrenheit.addEventListener("click", async ()=>{
+    tempUnitCheck.style.visibility="hidden";
+    tempUnitCheckFarenheit.style.visibility="visible";
+    localStorage.setItem("selectedTemp", "fahrenheit");
+    let selectedTemp = localStorage.getItem("selectedTemp");
+    let selectedSpeed = localStorage.getItem("selectedSpeed");
+    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed);
+  console.log(weatherLocationData);
+    loadDataToView(geoCoordinates, weatherLocationData);
+
+})
+
+windSpeedUnitKm.addEventListener("click", async()=>{
+    windSpeedUnitMilesCheck.style.visibility="hidden";
+    windSpeedUnitKmCheck.style.visibility="visible";
+    localStorage.setItem("selectedSpeed", "kmh");
+    let selectedSpeed = localStorage.getItem("selectedSpeed");
+      let selectedTemp = localStorage.getItem("selectedTemp");
+    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed);
+  console.log(weatherLocationData);
+    loadDataToView(geoCoordinates, weatherLocationData);
+})
+
+windSpeedUnitMiles.addEventListener("click", async()=>{
+    windSpeedUnitKmCheck.style.visibility="hidden";
+    windSpeedUnitMilesCheck.style.visibility="visible";
+    localStorage.setItem("selectedSpeed", "mph");
+    let selectedSpeed = localStorage.getItem("selectedSpeed");
+      let selectedTemp = localStorage.getItem("selectedTemp");
+    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed);
+  console.log(weatherLocationData);
+    loadDataToView(geoCoordinates, weatherLocationData);
+})
