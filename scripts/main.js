@@ -2,6 +2,7 @@ import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { Dropdown} from "./utilities/dropDown.js";
 const dropDown = new Dropdown();
  import { getGeoData, retrieveCoordinates, getWeatherData } from "./data/weatherData.js";
+ import { findWeatherCode, generateHourlyHTML, generateDailyHTML, generateHourlyAfterHtml} from './view/htmlGenerators.js';
 
 // unitsMenu functionality
 const dropDownIcon = document.querySelector(".units-button");
@@ -29,100 +30,7 @@ unitChoices.forEach((unitChoice)=>{
     })
 })
 
-//find weather code of the day
-function findWeatherCode(weatherCode) {
-    let result ="";
-    switch(weatherCode) {
-        case 0:
-            result = "icon-sunny";
-            break;
-        case 1:
-            result="icon-partly-cloudy";
-            break;
-        case 2:
-            result="icon-partly-cloudy";
-            break;
-        case 3:
-            result="icon-overcast";
-            break;
-        case 45:
-            result="icon-fog";
-            break;
-        case 48:
-            result="icon-fog";
-            break;
-        case 51:
-            result="icon-drizzle";
-            break;
-        case 53:
-            result="icon-drizzle";
-            break;
-        case 55:
-            result="icon-drizzle";
-            break;
-        case 56:
-            result="icon-drizzle";
-            break;
-        case 57:
-            result="icon-drizzle";
-            break;
-        case 61:
-            result="icon-rain";
-            break;
-        case 63:
-            result="icon-rain";
-            break;
-        case 65:
-            result="icon-rain";
-            break;
-        case 66:
-            result="icon-rain";
-            break;
-        case 67:
-            result="icon-rain";
-            break;
-        case 71:
-            result="icon-snow";
-            break;
-        case 73:
-            result="icon-snow";
-            break;
-        case 75:
-            result="icon-snow";
-            break;
-        case 77:
-            result="icon-snow";
-            break;
-        case 80:
-            result="icon-rain";
-            break;
-        case 81:
-            result="icon-rain";
-            break;
-        case 82:
-            result="icon-rain";
-            break;
-        case 85:
-            result="icon-snow";
-            break;
-        case 86:
-            result="icon-snow";
-            break;
-        case 95:
-            result="icon-storm";
-            break;
-        case 96:
-            result="icon-storm";
-            break;
-        case 99:
-            result="icon-storm";
-            break;
-    }
-    return result;
-}
-
 // hourly days menu functionality
-
 const hourlyDropDown = document.querySelector(".hourly-forecast-button");
 const hourlyMenu = document.querySelector(".hourly-menu");
 const hourlyChoices = document.querySelectorAll(".hourly-type-choice");
@@ -142,30 +50,6 @@ hourlyMenu.addEventListener("mouseout", ()=>{
     setTimeout(dropDown.isStillHovering(hourlyMenu, hourlyDropDown),2000);
 })
 
-// generate html for hourly forecast
-
-function generateHourlyHTML(hourlyTemps, hourlyCodes, startingPoint) {
-    let hourlHTML = ``;
-    for (let j=startingPoint;j<startingPoint+24;j++) {
-        let specificHour = "";
-        if (j == startingPoint) {
-            specificHour = "0 AM"
-        } else if (j == startingPoint+12) {
-            specificHour = "12 PM"
-        } else if (j > startingPoint && j < startingPoint+12) {
-            specificHour=  (j-startingPoint) + " AM";
-        } else if (j > startingPoint+ 12) {
-            specificHour = (j-(startingPoint+12))+ " PM";
-        }
-        hourlHTML += `  <div class="hourly-forecast-item">
-    <img src="assets/images/${findWeatherCode(hourlyCodes[j])}.webp" alt="hourly-forecast-img">
-    <p class="hour-of-day">${specificHour}</p>
-    <p class="hourly-temp">${Math.round(hourlyTemps[j])}°</p>
-  </div>`;
-    }
-    return hourlHTML;
-}
-
 // load data to  page
 const mainLocation = document.querySelector(".location");
 const dateContainer = document.querySelector(".date");
@@ -181,6 +65,7 @@ const dayChose = document.querySelector(".hourly-day-chose");
 const today = dayjs();
 dayChose.innerHTML = today.format("dddd");
 dateContainer.innerHTML = today.format('dddd, MMMM D YYYY');
+
 function loadDataToView(geoCoordinatesInput, weatherDataInput) {
     mainLocation.innerHTML = geoCoordinatesInput.results[0].name + ", "+ geoCoordinatesInput.results[0].country;
     console.log(geoCoordinatesInput.results[0].name)
@@ -190,39 +75,21 @@ function loadDataToView(geoCoordinatesInput, weatherDataInput) {
     currentHumidity.innerHTML = Math.round(weatherDataInput.current.relative_humidity_2m) + "%";
     currentWindSpeed.innerHTML = Math.round(weatherDataInput.current.wind_speed_10m) + " km/hr";
     currentPrecipitation.innerHTML = Math.round(weatherDataInput.current.precipitation) + " mm";
-    let dailyForecastHTML = ``;
     const dailyMaxTemps = weatherDataInput.daily.temperature_2m_max;
      const dailyMinTemps = weatherDataInput.daily.temperature_2m_min;
      const theWeatherCode = weatherDataInput.daily.weather_code;
-     
-    for (let i=7;i<14;i++) {
-        let dayOfWeek = today.add(i, 'days');
-        dailyForecastHTML += `<div class="daily-forecast-item">
-    <p class="day-of-week">${dayOfWeek.format('ddd')}</p>
-    <img src="assets/images/${findWeatherCode(theWeatherCode[i])}.webp" alt="tue-icon">
-    <div class="day-temperatures">
-      <p class="max-temp">${Math.round(dailyMaxTemps[i])}°</p>
-      <p class="min-tep">${Math.round(dailyMinTemps[i])}°</p>
-    </div>
-  </div>`;
-
-    }
-
     const hourlyTemps = weatherDataInput.hourly.temperature_2m;
     const hourlyCodes = weatherDataInput.hourly.weather_code;
      hourlyItems.innerHTML = generateHourlyHTML(hourlyTemps, hourlyCodes, 168);
-
-    dailyItems.innerHTML = dailyForecastHTML;
-
+    dailyItems.innerHTML = generateDailyHTML(dailyMaxTemps,dailyMinTemps,theWeatherCode,today);
 }
 
 // search bar functionaluity
-
 const searchBar = document.querySelector("#search-bar");
-
 const recentSearches = document.querySelector(".recent-searches");
 const searchButton = document.querySelector("#search-button");
   let weatherLocationData = {};
+  
 searchBar.addEventListener("click", ()=>{
     dropDown.isStillFocusing(searchBar, recentSearches);
 })
@@ -257,66 +124,15 @@ searchButton.addEventListener("click", async ()=>{
 })
 
 // day choice event listener
-
-let hourlyTempArray;
-let weatherCodeArray;
 for (let k=0;k<7;k++) {
     hourlyChoices[k].addEventListener("click", ()=>{
         let dayClicked = today.day(k+1)
         dayChose.innerHTML = dayClicked.format("dddd");
-        if (today.format("dddd") == "Monday") {
-            hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(168, 336);
-            weatherCodeArray = weatherLocationData.hourly.weather_code.slice(168, 336);
-            console.log(hourlyTempArray);
-        } else if (today.format("dddd") == "Tuesday") {
-            hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(144, (144+168));
-            weatherCodeArray = weatherLocationData.hourly.weather_code.slice(144, (144+168));
-            console.log(hourlyTempArray);
-        } else if (today.format("dddd") == "Wednesday") {
-             hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(120, (120+168));
-             weatherCodeArray = weatherLocationData.hourly.weather_code.slice(120, (120+168));
-            console.log(hourlyTempArray);
-        } else if  (today.format("dddd") == "Thursday") {
-            hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(96, (96+168));
-            weatherCodeArray = weatherLocationData.hourly.weather_code.slice(96, (96+168));
-            console.log(hourlyTempArray);
-            console.log(weatherCodeArray);
-        } else if  (today.format("dddd") == "Friday") {
-            hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(72, (72+168));
-            weatherCodeArray = weatherLocationData.hourly.weather_code.slice(72, (72+168));
-            console.log(hourlyTempArray);
-        } else if (today.format("dddd") == "Saturday")  {
-            hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(48, (48+168));
-            weatherCodeArray = weatherLocationData.hourly.weather_code.slice(48, (48+168));
-            console.log(hourlyTempArray);
-        } else if  (today.format("dddd") == "Sunday")  {
-            hourlyTempArray = weatherLocationData.hourly.temperature_2m.slice(24, (24+168));
-            weatherCodeArray = weatherLocationData.hourly.weather_code.slice(24, (24+168));
-            console.log(hourlyTempArray);
-        }
-
-        if (dayChose.innerHTML=="Monday") {
-            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 0);
-        } else if (dayChose.innerHTML =="Tuesday"){
-            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 24);
-        } else if  (dayChose.innerHTML =="Wednesday"){
-            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 48);
-        } else if (dayChose.innerHTML=="Thursday"){
-            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 72);
-        } else if (dayChose.innerHTML=="Friday") {
-            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 96);
-        } else if (dayChose.innerHTML=="Saturday") {
-            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 120);
-        } else if  (dayChose.innerHTML=="Sunday") {
-            hourlyItems.innerHTML = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 144);
-        } 
-
+         hourlyItems.innerHTML = generateHourlyAfterHtml(dayChose.innerHTML,weatherLocationData,today);
     })
 }
 
-
 // body event listener
-
 const body = document.querySelector("body");
 body.addEventListener("click", (event)=>{
     if (event.target ==  searchBar || event.target == recentSearches || event.target == dropDownIcon || event.target == hourlyDropDown) {
