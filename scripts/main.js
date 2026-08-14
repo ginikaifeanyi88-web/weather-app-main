@@ -63,6 +63,14 @@ const currentWindSpeed = document.querySelector(".js-current-wind-speed");
 const currentSpeedUnit = document.querySelector(".js-current-speed-unit");
 const dailyItems = document.querySelector(".daily-forecast-items");
 const hourlyItems = document.querySelector(".hourly-forecast-items");
+
+const tempUnitCheck = document.querySelector(".js-temp-celsius-check");
+const tempUnitCheckFarenheit = document.querySelector(".js-temp-fahrenheit-check");
+const windSpeedUnitKmCheck = document.querySelector(".js-speed-km-check");
+const windSpeedUnitMilesCheck = document.querySelector(".js-speed-miles-check");
+const precipMMCheck = document.querySelector(".js-precip-mm-check");
+const precipInchCheck = document.querySelector(".js-precip-inch-check");
+
 const dayChose = document.querySelector(".hourly-day-chose");
 const today = dayjs();
 dayChose.innerHTML = today.format("dddd");
@@ -78,21 +86,37 @@ function loadDataToView(geoCoordinatesInput, weatherDataInput) {
     currentWindSpeed.innerHTML = Math.round(weatherDataInput.current.wind_speed_10m);
      let selectedSpeed = localStorage.getItem("selectedSpeed");
      if (selectedSpeed == "kmh") {
+        windSpeedUnitMilesCheck.style.visibility="hidden";
+    windSpeedUnitKmCheck.style.visibility="visible";
         currentSpeedUnit.innerHTML = "km/h";
      } else if (selectedSpeed == "mph") {
+        windSpeedUnitMilesCheck.style.visibility="visible";
+    windSpeedUnitKmCheck.style.visibility="hidden";
         currentSpeedUnit.innerHTML = "mph";
      }
     currentPrecipitation.innerHTML = Math.round(weatherDataInput.current.precipitation);
        let selectedPrecip =  localStorage.getItem("selectedPrecip");
        if (selectedPrecip == "mm") {
+        precipMMCheck.style.visibility ="visible";
+    precipInchCheck.style.visibility ="hidden";
         currentPrecipUnit.innerHTML = "mm";
      } else if (selectedPrecip == "inch") {
+        precipMMCheck.style.visibility ="hidden";
+    precipInchCheck.style.visibility ="visible";
         currentPrecipUnit.innerHTML = "in";
      } 
     const dailyMaxTemps = weatherDataInput.daily.temperature_2m_max;
      const dailyMinTemps = weatherDataInput.daily.temperature_2m_min;
      const theWeatherCode = weatherDataInput.daily.weather_code;
     const hourlyTemps = weatherDataInput.hourly.temperature_2m;
+     let selectedTemp = localStorage.getItem("selectedTemp");
+     if (selectedTemp == "celsius") {
+        tempUnitCheck.style.visibility="visible";
+    tempUnitCheckFarenheit.style.visibility="hidden";
+     } else if (selectedTemp == "fahrenheit") {
+       tempUnitCheck.style.visibility="hidden";
+    tempUnitCheckFarenheit.style.visibility="visible";
+     } 
     const hourlyCodes = weatherDataInput.hourly.weather_code;
      hourlyItems.innerHTML = generateHourlyHTML(hourlyTemps, hourlyCodes, 168);
     dailyItems.innerHTML = generateDailyHTML(dailyMaxTemps,dailyMinTemps,theWeatherCode,today);
@@ -164,17 +188,11 @@ body.addEventListener("click", (event)=>{
 
 // units event listeners
 const tempUnit = document.querySelector(".js-temp-celsius");
-const tempUnitCheck = document.querySelector(".js-temp-celsius-check");
 const tempUnitFahrenheit = document.querySelector(".js-temp-fahrenheit");
-const tempUnitCheckFarenheit = document.querySelector(".js-temp-fahrenheit-check");
 const windSpeedUnitKm = document.querySelector(".js-speed-km");
-const windSpeedUnitKmCheck = document.querySelector(".js-speed-km-check");
 const windSpeedUnitMiles= document.querySelector(".js-speed-miles");
-const windSpeedUnitMilesCheck = document.querySelector(".js-speed-miles-check");
 const precipMM = document.querySelector(".js-precip-mm");
-const precipMMCheck = document.querySelector(".js-precip-mm-check");
 const precipInch = document.querySelector(".js-precip-inch");
-const precipInchCheck = document.querySelector(".js-precip-inch-check");
 
 tempUnit.addEventListener("click", async ()=>{
     tempUnitCheckFarenheit.style.visibility="hidden";
