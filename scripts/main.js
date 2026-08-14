@@ -1,7 +1,7 @@
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { Dropdown} from "./utilities/dropDown.js";
  import { getGeoData, retrieveCoordinates, getWeatherData } from "./data/weatherData.js";
- import { findWeatherCode, generateHourlyHTML, generateDailyHTML, generateHourlyAfterHtml} from './view/htmlGenerators.js';
+ import { findWeatherCode, generateHourlyHTML, generateDailyHTML, generateHourlyAfterHtml, returnWindSpeedStatus, returnPrecipitationStatus, returnTempStatus} from './view/htmlGenerators.js';
 
 // unitsMenu functionality
 const dropDown = new Dropdown();
@@ -85,38 +85,24 @@ function loadDataToView(geoCoordinatesInput, weatherDataInput) {
     currentHumidity.innerHTML = Math.round(weatherDataInput.current.relative_humidity_2m) + "%";
     currentWindSpeed.innerHTML = Math.round(weatherDataInput.current.wind_speed_10m);
      let selectedSpeed = localStorage.getItem("selectedSpeed");
-     if (selectedSpeed == "kmh") {
-        windSpeedUnitMilesCheck.style.visibility="hidden";
-    windSpeedUnitKmCheck.style.visibility="visible";
-        currentSpeedUnit.innerHTML = "km/h";
-     } else if (selectedSpeed == "mph") {
-        windSpeedUnitMilesCheck.style.visibility="visible";
-    windSpeedUnitKmCheck.style.visibility="hidden";
-        currentSpeedUnit.innerHTML = "mph";
-     }
+        windSpeedUnitMilesCheck.style.visibility= returnWindSpeedStatus(selectedSpeed)[1];
+    windSpeedUnitKmCheck.style.visibility= returnWindSpeedStatus(selectedSpeed)[0];
+        currentSpeedUnit.innerHTML = returnWindSpeedStatus(selectedSpeed)[2];
+   
     currentPrecipitation.innerHTML = Math.round(weatherDataInput.current.precipitation);
        let selectedPrecip =  localStorage.getItem("selectedPrecip");
-       if (selectedPrecip == "mm") {
-        precipMMCheck.style.visibility ="visible";
-    precipInchCheck.style.visibility ="hidden";
-        currentPrecipUnit.innerHTML = "mm";
-     } else if (selectedPrecip == "inch") {
-        precipMMCheck.style.visibility ="hidden";
-    precipInchCheck.style.visibility ="visible";
-        currentPrecipUnit.innerHTML = "in";
-     } 
+        precipMMCheck.style.visibility =returnPrecipitationStatus(selectedPrecip)[0];
+    precipInchCheck.style.visibility =returnPrecipitationStatus(selectedPrecip)[1];
+        currentPrecipUnit.innerHTML = returnPrecipitationStatus(selectedPrecip)[2];
+ 
     const dailyMaxTemps = weatherDataInput.daily.temperature_2m_max;
      const dailyMinTemps = weatherDataInput.daily.temperature_2m_min;
      const theWeatherCode = weatherDataInput.daily.weather_code;
     const hourlyTemps = weatherDataInput.hourly.temperature_2m;
      let selectedTemp = localStorage.getItem("selectedTemp");
-     if (selectedTemp == "celsius") {
-        tempUnitCheck.style.visibility="visible";
-    tempUnitCheckFarenheit.style.visibility="hidden";
-     } else if (selectedTemp == "fahrenheit") {
-       tempUnitCheck.style.visibility="hidden";
-    tempUnitCheckFarenheit.style.visibility="visible";
-     } 
+        tempUnitCheck.style.visibility=returnTempStatus(selectedTemp)[0];
+    tempUnitCheckFarenheit.style.visibility=returnTempStatus(selectedTemp)[1];
+    
     const hourlyCodes = weatherDataInput.hourly.weather_code;
      hourlyItems.innerHTML = generateHourlyHTML(hourlyTemps, hourlyCodes, 168);
     dailyItems.innerHTML = generateDailyHTML(dailyMaxTemps,dailyMinTemps,theWeatherCode,today);
@@ -193,6 +179,7 @@ const windSpeedUnitKm = document.querySelector(".js-speed-km");
 const windSpeedUnitMiles= document.querySelector(".js-speed-miles");
 const precipMM = document.querySelector(".js-precip-mm");
 const precipInch = document.querySelector(".js-precip-inch");
+const imperialMetric = document.querySelector(".js-imperial-metric");
 
 tempUnit.addEventListener("click", async ()=>{
     tempUnitCheckFarenheit.style.visibility="hidden";
@@ -267,4 +254,42 @@ precipInch.addEventListener("click", async()=>{
       weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
+})
+
+imperialMetric.addEventListener("click", async ()=>{
+    let selectedTemp;
+    let selectedSpeed;
+     let selectedPrecip;
+    if (imperialMetric.innerHTML=="Switch to Metric") {
+    imperialMetric.innerHTML = "Switch to Imperial";
+    tempUnitCheckFarenheit.style.visibility="hidden";
+    tempUnitCheck.style.visibility="visible";
+    localStorage.setItem("selectedTemp", "celsius");
+    windSpeedUnitMilesCheck.style.visibility="hidden";
+    windSpeedUnitKmCheck.style.visibility="visible";
+    localStorage.setItem("selectedSpeed", "kmh");
+      localStorage.setItem("selectedPrecip", "mm");
+    precipInchCheck.style.visibility ="hidden";
+    precipMMCheck.style.visibility ="visible";
+    selectedTemp = localStorage.getItem("selectedTemp");
+    selectedSpeed = localStorage.getItem("selectedSpeed");
+      selectedPrecip =  localStorage.getItem("selectedPrecip");
+    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+    } else if (imperialMetric.innerHTML=="Switch to Imperial") {
+         imperialMetric.innerHTML = "Switch to Metric";
+         tempUnitCheck.style.visibility="hidden";
+    tempUnitCheckFarenheit.style.visibility="visible";
+    localStorage.setItem("selectedTemp", "fahrenheit");
+    windSpeedUnitKmCheck.style.visibility="hidden";
+    windSpeedUnitMilesCheck.style.visibility="visible";
+    localStorage.setItem("selectedSpeed", "mph");
+ precipMMCheck.style.visibility ="hidden";
+    precipInchCheck.style.visibility ="visible";
+    localStorage.setItem("selectedPrecip", "inch");
+    selectedTemp = localStorage.getItem("selectedTemp");
+    selectedSpeed = localStorage.getItem("selectedSpeed");
+     selectedPrecip =  localStorage.getItem("selectedPrecip");
+     weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+    }
+     loadDataToView(geoCoordinates, weatherLocationData);
 })

@@ -186,3 +186,49 @@ export function generateDailyHTML(dailyMaxTemps, dailyMinTemps, theWeatherCode, 
         }
         return dailyForecastHTML;
 }
+
+// return status of units in local storage to add specific styles
+export function returnWindSpeedStatus(selectedSpeed) {
+    let windSpeedMilesCheckValue;
+    let windSpeedKmCheckValue;
+    let currentSpeedUnitValue;
+       if (selectedSpeed == "kmh") {
+        windSpeedMilesCheckValue ="hidden";
+    windSpeedKmCheckValue="visible";
+        currentSpeedUnitValue = "km/h";
+     } else if (selectedSpeed == "mph") {
+     windSpeedMilesCheckValue ="visible";
+    windSpeedKmCheckValue="hidden";
+        currentSpeedUnitValue = "mph";
+     }
+     return [windSpeedKmCheckValue, windSpeedMilesCheckValue, currentSpeedUnitValue];
+}
+
+export function returnPrecipitationStatus(selectedPrecip) {
+    let precipMMCheckValue;
+    let precipInchCheckValue;
+    let currentPrecipValue;
+       if (selectedPrecip == "mm") {
+        precipMMCheckValue ="visible";
+    precipInchCheckValue ="hidden";
+        currentPrecipValue = "mm";
+     } else if (selectedPrecip == "inch") {
+        precipMMCheckValue ="hidden";
+    precipInchCheckValue ="visible";
+        currentPrecipValue = "in";
+     } 
+     return [precipMMCheckValue, precipInchCheckValue, currentPrecipValue];
+}
+
+export function returnTempStatus(selectedTemp) {
+    let tempUnitCheckValue;
+    let tempUnitCheckFarenheitValue;
+    if (selectedTemp == "celsius") {
+        tempUnitCheckValue="visible";
+    tempUnitCheckFarenheitValue="hidden";
+     } else if (selectedTemp == "fahrenheit") {
+       tempUnitCheckValue="hidden";
+    tempUnitCheckFarenheitValue="visible";
+     } 
+     return [tempUnitCheckValue, tempUnitCheckFarenheitValue];
+}
