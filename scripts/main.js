@@ -59,6 +59,7 @@ const feelsLike = document.querySelector(".js-current-temp");
 const currentHumidity = document.querySelector(".js-current-humidity");
 const currentPrecipitation =document.querySelector(".js-current-precipitation");
 const currentWindSpeed = document.querySelector(".js-current-wind-speed");
+const currentSpeedUnit = document.querySelector(".js-current-speed-unit");
 const dailyItems = document.querySelector(".daily-forecast-items");
 const hourlyItems = document.querySelector(".hourly-forecast-items");
 const dayChose = document.querySelector(".hourly-day-chose");
@@ -74,6 +75,12 @@ function loadDataToView(geoCoordinatesInput, weatherDataInput) {
     feelsLike.innerHTML = Math.round(weatherDataInput.current.temperature_2m)+"°";
     currentHumidity.innerHTML = Math.round(weatherDataInput.current.relative_humidity_2m) + "%";
     currentWindSpeed.innerHTML = Math.round(weatherDataInput.current.wind_speed_10m);
+     let selectedSpeed = localStorage.getItem("selectedSpeed");
+     if (selectedSpeed == "kmh") {
+        currentSpeedUnit.innerHTML = "km/h";
+     } else if (selectedSpeed == "mph") {
+        currentSpeedUnit.innerHTML = "mph";
+     }
     currentPrecipitation.innerHTML = Math.round(weatherDataInput.current.precipitation) + " mm";
     const dailyMaxTemps = weatherDataInput.daily.temperature_2m_max;
      const dailyMinTemps = weatherDataInput.daily.temperature_2m_min;
