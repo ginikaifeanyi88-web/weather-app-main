@@ -3,7 +3,7 @@ import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { Dropdown} from "./utilities/dropDown.js";
 import { isAlphaOrComma } from './utilities/otherUtilites.js';
  import { getGeoData, retrieveCoordinates, getWeatherData, getGeoDataSearch } from "./data/weatherData.js";
- import { findWeatherCode, generateHourlyHTML, generateDailyHTML, generateHourlyAfterHtml, returnWindSpeedStatus, returnPrecipitationStatus, returnTempStatus} from './view/htmlGenerators.js';
+ import { findWeatherCode, generateHourlyHTML, generateDailyHTML, generateHourlyAfterHtml, returnWindSpeedStatus, returnPrecipitationStatus, returnTempStatus, returnSearchOptionContainers} from './view/htmlGenerators.js';
 
 // unitsMenu functionality
 const dropDown = new Dropdown();
@@ -136,13 +136,13 @@ async function initialDataLoad() {
         selectedPrecip="mm";
         localStorage.setItem("selectedPrecip", "mm");
      }
-    //  if (selectedTemp=="celsius"&&selectedSpeed=="kmh"&&selectedPrecip=="mm") {
-    //     imperialMetric.innerHTML = "Switch to Imperial";
-    //  } else if (selectedTemp=="fahrenheit"&&selectedSpeed=="mph"&&selectedPrecip=="inch") {
-    //      imperialMetric.innerHTML = "Switch to Metric";
-    //  } else {
-    //     imperialMetric.innerHTML = "Switch to Imperial";
-    //  }
+     if (selectedTemp=="celsius"&&selectedSpeed=="kmh"&&selectedPrecip=="mm") {
+        imperialMetric.innerHTML = "Switch to Imperial";
+     } else if (selectedTemp=="fahrenheit"&&selectedSpeed=="mph"&&selectedPrecip=="inch") {
+         imperialMetric.innerHTML = "Switch to Metric";
+     } else {
+        imperialMetric.innerHTML = "Switch to Imperial";
+     }
      geoCoordinates = await  retrieveCoordinates(lastLocationSearched);
      console.log(selectedTemp);
      weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
@@ -181,6 +181,7 @@ searchBar.addEventListener("keydown", async (event)=>{
     const searchValue = searchBar.value;
     let selectedTemp = localStorage.getItem("selectedTemp");
     let selectedSpeed = localStorage.getItem("selectedSpeed");
+     let selectedPrecip =  localStorage.getItem("selectedPrecip");
 if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searchValue))) {
    let geoCoordinatesSearchInitial = await  getGeoDataSearch(searchValue);
    let geoCoordinatesSearch = geoCoordinatesSearchInitial.results.filter((geoResult)=>{
@@ -191,23 +192,8 @@ if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searc
    })
    console.log(geoCoordinatesSearch);
   
-   if (geoCoordinatesSearch.length ==4) {
-    recentSearches.innerHTML= `<p class="recent-search">City name</p>
-    <p class="recent-search">City name</p>
-    <p class="recent-search">City name</p>
-    <p class="recent-search">City name</p>`;
-   } else if (geoCoordinatesSearch.length ==3) {
-     recentSearches.innerHTML= `<p class="recent-search">City name</p>
-    <p class="recent-search">City name</p>
-    <p class="recent-search">City name</p>`;
-   } else if (geoCoordinatesSearch.length ==2) {
-     recentSearches.innerHTML= `<p class="recent-search">City name</p>
-    <p class="recent-search">City name</p>`;
-   } else if (geoCoordinatesSearch.length ==1) {
-     recentSearches.innerHTML= `<p class="recent-search">City name</p>`;
-   }  else if (geoCoordinatesSearch.length ==0 ||(geoCoordinatesSearch.length==undefined) ) {
-     recentSearches.innerHTML= ``;
-   }
+     recentSearches.innerHTML= returnSearchOptionContainers(geoCoordinatesSearch);
+   
    recentSearchOptions = document.querySelectorAll(".recent-search");
     let l = 0;
    recentSearchOptions.forEach((recentSearchOption)=>{
@@ -219,7 +205,7 @@ if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searc
    recentSearchOptions.forEach((recentSearchOption)=>{
     recentSearchOption.addEventListener("click", async ()=>{
           geoCoordinates = await  retrieveCoordinates(recentSearchOption.innerHTML);
-  weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, "mm");
+  weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
         recentSearches.style.display = "none";

@@ -232,3 +232,25 @@ export function returnTempStatus(selectedTemp) {
      } 
      return [tempUnitCheckValue, tempUnitCheckFarenheitValue];
 }
+
+export function returnSearchOptionContainers(geoCoordinatesSearch) {
+    let recentSearchesHTML;
+     if (geoCoordinatesSearch.length ==4) {
+    recentSearchesHTML= `<p class="recent-search">City name</p>
+    <p class="recent-search">City name</p>
+    <p class="recent-search">City name</p>
+    <p class="recent-search">City name</p>`;
+   } else if (geoCoordinatesSearch.length ==3) {
+     recentSearchesHTML= `<p class="recent-search">City name</p>
+    <p class="recent-search">City name</p>
+    <p class="recent-search">City name</p>`;
+   } else if (geoCoordinatesSearch.length ==2) {
+     recentSearchesHTML= `<p class="recent-search">City name</p>
+    <p class="recent-search">City name</p>`;
+   } else if (geoCoordinatesSearch.length ==1) {
+     recentSearchesHTML= `<p class="recent-search">City name</p>`;
+   }  else if (geoCoordinatesSearch.length ==0 ||(geoCoordinatesSearch.length==undefined) ) {
+     recentSearchesHTML= ``;
+   }
+   return recentSearchesHTML;
+}
