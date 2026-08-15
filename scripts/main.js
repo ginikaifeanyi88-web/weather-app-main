@@ -1,6 +1,8 @@
+// imports
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { Dropdown} from "./utilities/dropDown.js";
- import { getGeoData, retrieveCoordinates, getWeatherData } from "./data/weatherData.js";
+import { isAlphaOrComma } from './utilities/otherUtilites.js';
+ import { getGeoData, retrieveCoordinates, getWeatherData, getGeoDataSearch } from "./data/weatherData.js";
  import { findWeatherCode, generateHourlyHTML, generateDailyHTML, generateHourlyAfterHtml, returnWindSpeedStatus, returnPrecipitationStatus, returnTempStatus} from './view/htmlGenerators.js';
 
 // unitsMenu functionality
@@ -50,6 +52,7 @@ hourlyMenu.addEventListener("mouseout", ()=>{
     setTimeout(dropDown.isStillHovering(hourlyMenu, hourlyDropDown),2000);
 })
 
+
 // load data to  page
 const mainLocation = document.querySelector(".location");
 const dateContainer = document.querySelector(".date");
@@ -77,8 +80,9 @@ dayChose.innerHTML = today.format("dddd");
 dateContainer.innerHTML = today.format('dddd, MMMM D YYYY');
 
 function loadDataToView(geoCoordinatesInput, weatherDataInput) {
-    mainLocation.innerHTML = geoCoordinatesInput.results[0].name + ", "+ geoCoordinatesInput.results[0].country;
+    mainLocation.innerHTML = geoCoordinatesInput.results[0].name + " (" + geoCoordinatesInput.results[0].admin1 + "), "+ geoCoordinatesInput.results[0].country;
     console.log(geoCoordinatesInput.results[0].name)
+    localStorage.setItem("lastLocationSearched", geoCoordinatesInput.results[0].name);
     currentTemp.innerHTML =Math.round(weatherDataInput.daily.temperature_2m_max[7])+"°";
     currentIcon.setAttribute("src", `/assets/images/${findWeatherCode(weatherDataInput.daily.weather_code[7])}.webp`);
     feelsLike.innerHTML = Math.round(weatherDataInput.current.temperature_2m)+"°";
@@ -108,21 +112,67 @@ function loadDataToView(geoCoordinatesInput, weatherDataInput) {
     dailyItems.innerHTML = generateDailyHTML(dailyMaxTemps,dailyMinTemps,theWeatherCode,today);
 }
 
+// Initial data loading
+const imperialMetric = document.querySelector(".js-imperial-metric");
+  let weatherLocationData = {};
+  let geoCoordinates = {};
+async function initialDataLoad() {
+    let lastLocationSearched = localStorage.getItem("lastLocationSearched");
+     let selectedTemp = localStorage.getItem("selectedTemp");
+   let  selectedSpeed = localStorage.getItem("selectedSpeed");
+     let  selectedPrecip =  localStorage.getItem("selectedPrecip");
+     if (!lastLocationSearched) {
+        lastLocationSearched = "New York";
+     }
+     if (!selectedTemp){
+        selectedTemp="celsius";
+        localStorage.setItem("selectedTemp", "celsius");
+     }
+      if (!selectedSpeed){
+        selectedSpeed="kmh";
+         localStorage.setItem("selectedSpeed", "kmh");
+     }
+     if (!selectedPrecip){
+        selectedPrecip="mm";
+        localStorage.setItem("selectedPrecip", "mm");
+     }
+    //  if (selectedTemp=="celsius"&&selectedSpeed=="kmh"&&selectedPrecip=="mm") {
+    //     imperialMetric.innerHTML = "Switch to Imperial";
+    //  } else if (selectedTemp=="fahrenheit"&&selectedSpeed=="mph"&&selectedPrecip=="inch") {
+    //      imperialMetric.innerHTML = "Switch to Metric";
+    //  } else {
+    //     imperialMetric.innerHTML = "Switch to Imperial";
+    //  }
+     geoCoordinates = await  retrieveCoordinates(lastLocationSearched);
+     console.log(selectedTemp);
+     weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+     loadDataToView(geoCoordinates, weatherLocationData);
+     precipMMCheck.style.visibility =returnPrecipitationStatus(selectedPrecip)[0];
+    precipInchCheck.style.visibility =returnPrecipitationStatus(selectedPrecip)[1];
+        currentPrecipUnit.innerHTML = returnPrecipitationStatus(selectedPrecip)[2];
+         tempUnitCheck.style.visibility=returnTempStatus(selectedTemp)[0];
+    tempUnitCheckFarenheit.style.visibility=returnTempStatus(selectedTemp)[1];
+    windSpeedUnitMilesCheck.style.visibility= returnWindSpeedStatus(selectedSpeed)[1];
+    windSpeedUnitKmCheck.style.visibility= returnWindSpeedStatus(selectedSpeed)[0];
+        currentSpeedUnit.innerHTML = returnWindSpeedStatus(selectedSpeed)[2];
+}
+
+initialDataLoad();
+
 // search bar functionaluity
 const searchBar = document.querySelector("#search-bar");
 const recentSearches = document.querySelector(".recent-searches");
 const searchButton = document.querySelector("#search-button");
-  let weatherLocationData = {};
-  let geoCoordinates = {};
+
 
 searchBar.addEventListener("click", ()=>{
     dropDown.isStillFocusing(searchBar, recentSearches);
 })
 
-const recentSearchOptions = document.querySelectorAll(".recent-search");
+let recentSearchOptions = document.querySelectorAll(".recent-search");
 recentSearchOptions.forEach((recentSearchOption)=>{
     recentSearchOption.addEventListener("click", ()=>{
-        console.log("scooby dooby doo")
+        console.log("scooby dooby doo");
         recentSearches.style.display = "none";
     })
 })
@@ -131,10 +181,63 @@ searchBar.addEventListener("keydown", async (event)=>{
     const searchValue = searchBar.value;
     let selectedTemp = localStorage.getItem("selectedTemp");
     let selectedSpeed = localStorage.getItem("selectedSpeed");
+if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searchValue))) {
+   let geoCoordinatesSearchInitial = await  getGeoDataSearch(searchValue);
+   let geoCoordinatesSearch = geoCoordinatesSearchInitial.results.filter((geoResult)=>{
+    if (geoResult.admin1 !== undefined) {
+        return  geoResult;
+    }
+    
+   })
+   console.log(geoCoordinatesSearch);
+  
+   if (geoCoordinatesSearch.length ==4) {
+    recentSearches.innerHTML= `<p class="recent-search">City name</p>
+    <p class="recent-search">City name</p>
+    <p class="recent-search">City name</p>
+    <p class="recent-search">City name</p>`;
+   } else if (geoCoordinatesSearch.length ==3) {
+     recentSearches.innerHTML= `<p class="recent-search">City name</p>
+    <p class="recent-search">City name</p>
+    <p class="recent-search">City name</p>`;
+   } else if (geoCoordinatesSearch.length ==2) {
+     recentSearches.innerHTML= `<p class="recent-search">City name</p>
+    <p class="recent-search">City name</p>`;
+   } else if (geoCoordinatesSearch.length ==1) {
+     recentSearches.innerHTML= `<p class="recent-search">City name</p>`;
+   }  else if (geoCoordinatesSearch.length ==0 ||(geoCoordinatesSearch.length==undefined) ) {
+     recentSearches.innerHTML= ``;
+   }
+   recentSearchOptions = document.querySelectorAll(".recent-search");
+    let l = 0;
+   recentSearchOptions.forEach((recentSearchOption)=>{
+    recentSearchOption.innerHTML = geoCoordinatesSearch[l].name + ", "+ geoCoordinatesSearch[l].admin1 + ", "+ geoCoordinatesSearch[l].country;
+    l++;
+    
+   })
+   recentSearches.style.display ="block";
+   recentSearchOptions.forEach((recentSearchOption)=>{
+    recentSearchOption.addEventListener("click", async ()=>{
+          geoCoordinates = await  retrieveCoordinates(recentSearchOption.innerHTML);
+  weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, "mm");
+  console.log(weatherLocationData);
+    loadDataToView(geoCoordinates, weatherLocationData);
+        recentSearches.style.display = "none";
+        
+    })
+})
+}
+})
+
+searchBar.addEventListener("keydown", async (event)=>{
+    const searchValue = searchBar.value;
+    let selectedTemp = localStorage.getItem("selectedTemp");
+    let selectedSpeed = localStorage.getItem("selectedSpeed");
+    let selectedPrecip =  localStorage.getItem("selectedPrecip");
 if (event.code == "Enter") {
     console.log("hi");
   geoCoordinates = await  retrieveCoordinates(searchValue);
-  weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, "mm");
+  weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 }
@@ -144,9 +247,10 @@ searchButton.addEventListener("click", async ()=>{
     const searchValue = searchBar.value;
     let selectedTemp = localStorage.getItem("selectedTemp");
     let selectedSpeed = localStorage.getItem("selectedSpeed");
+    let selectedPrecip =  localStorage.getItem("selectedPrecip");
     console.log("this is")
      const geoCoordinates = await  retrieveCoordinates(searchValue);
-    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, "mm");
+    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
   loadDataToView(geoCoordinates, weatherLocationData);
 })
@@ -167,6 +271,7 @@ body.addEventListener("click", (event)=>{
 
     } else {
     recentSearches.style.display = "none";
+    console.log("???");
     unitsMenu.style.display ="none";
     hourlyMenu.style.display ="none";
     }
@@ -179,7 +284,6 @@ const windSpeedUnitKm = document.querySelector(".js-speed-km");
 const windSpeedUnitMiles= document.querySelector(".js-speed-miles");
 const precipMM = document.querySelector(".js-precip-mm");
 const precipInch = document.querySelector(".js-precip-inch");
-const imperialMetric = document.querySelector(".js-imperial-metric");
 
 tempUnit.addEventListener("click", async ()=>{
     tempUnitCheckFarenheit.style.visibility="hidden";

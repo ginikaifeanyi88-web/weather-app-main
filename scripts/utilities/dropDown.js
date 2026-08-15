@@ -11,7 +11,7 @@ export class Dropdown {
 // check if item is still in focus state
 isStillFocusing(searchBar, recentSearches) {
        if (searchBar.matches(':focus')) {
-         recentSearches.style.display ="block";
+        
     console.log("yo") 
     } 
 }
