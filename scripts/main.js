@@ -86,7 +86,7 @@ dateContainer.innerHTML = today.format('dddd, MMMM D YYYY');
 function loadDataToView(geoCoordinatesInput, weatherDataInput) {
     mainLocation.innerHTML = geoCoordinatesInput.results[0].name + " (" + geoCoordinatesInput.results[0].admin1 + "), "+ geoCoordinatesInput.results[0].country;
     console.log(geoCoordinatesInput.results[0].name)
-    localStorage.setItem("lastLocationSearched", geoCoordinatesInput.results[0].name);
+    localStorage.setItem("lastLocationSearched", (geoCoordinatesInput.results[0].name + ", " + geoCoordinatesInput.results[0].admin1 + ", "+ geoCoordinatesInput.results[0].country));
     currentTemp.innerHTML =Math.round(weatherDataInput.daily.temperature_2m_max[7])+"°";
     currentIcon.setAttribute("src", `/assets/images/${htmlGeneratorObject.findWeatherCode(weatherDataInput.daily.weather_code[7])}.webp`);
     feelsLike.innerHTML = Math.round(weatherDataInput.current.temperature_2m)+"°";
