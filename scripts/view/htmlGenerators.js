@@ -256,5 +256,188 @@ returnTempStatus(selectedTemp) {
    return recentSearchesHTML;
 }
 
+returnDailyHTMLoadState() {
+    let returnedHTML=` <div class="daily-forecast-item">
+    <p class="day-of-week">Mon</p>
+    <img src="" alt="">
+    <div class="day-temperatures">
+      <p class="max-temp"></p>
+      <p class="min-tep"></p>
+    </div>
+  </div>
+  <div class="daily-forecast-item">
+    <p class="day-of-week">Tue</p>
+    <img src="" alt="">
+    <div class="day-temperatures">
+      <p class="max-temp"></p>
+      <p class="min-tep"></p>
+    </div>
+  </div>
+  <div class="daily-forecast-item">
+    <p class="day-of-week">Wed</p>
+    <img src="" alt="">
+    <div class="day-temperatures">
+      <p class="max-temp"></p>
+      <p class="min-tep"></p>
+    </div>
+  </div>
+  <div class="daily-forecast-item">
+    <p class="day-of-week">Thu</p>
+    <img src="" alt="">
+    <div class="day-temperatures">
+      <p class="max-temp"></p>
+      <p class="min-tep"></p>
+    </div>
+  </div>
+  <div class="daily-forecast-item">
+    <p class="day-of-week">Fri</p>
+    <img src="" alt="">
+    <div class="day-temperatures">
+      <p class="max-temp"></p>
+      <p class="min-tep"></p>
+    </div>
+  </div>
+  <div class="daily-forecast-item">
+    <p class="day-of-week">Sat</p>
+    <img src="" alt="">
+    <div class="day-temperatures">
+      <p class="max-temp"></p>
+      <p class="min-tep"></p>
+    </div>
+  </div>
+  <div class="daily-forecast-item">
+    <p class="day-of-week">Sun</p>
+    <img src="" alt="">
+    <div class="day-temperatures">
+      <p class="max-temp"></p>
+      <p class="min-tep"></p>
+    </div>
+  </div>`;
+  return returnedHTML;
+}
+
+returnHourlyHTMLoadState() {
+    let returnedHTML = ` <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>
+   <div class="hourly-forecast-item">
+    <img src="" alt="">
+    <p class="hour-of-day"></p>
+    <p class="hourly-temp"></p>
+  </div>`;
+  return returnedHTML;
+}
 
 }

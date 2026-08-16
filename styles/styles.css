@@ -359,6 +359,7 @@ height: 286px;
 
 .daily-forecast-item {
     padding: 10px 0;
+    height: 138px;
     text-align: center;
       background-color: hsl(243, 23%, 24%);
      border-radius: 10px;
@@ -478,6 +479,7 @@ height: 286px;
     align-items: center;
     background-color:  hsl(243, 23%, 30%);
     margin-top: 16px;
+    min-height: 55px;
     padding-right: 9px;
     border-radius: 10px;
      border: 1px solid hsl(243, 19%, 41%);

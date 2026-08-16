@@ -57,7 +57,7 @@ hourlyMenu.addEventListener("mouseout", ()=>{
 })
 
 
-// load data to  page
+// page data variables
 const mainLocation = document.querySelector(".location");
 const dateContainer = document.querySelector(".date");
 const currentTemp = document.querySelector(".temp");
@@ -80,10 +80,11 @@ const precipInchCheck = document.querySelector(".js-precip-inch-check");
 
 const dayChose = document.querySelector(".hourly-day-chose");
 const today = dayjs();
-dayChose.innerHTML = today.format("dddd");
-dateContainer.innerHTML = today.format('dddd, MMMM D YYYY');
 
+// load data to  page
 function loadDataToView(geoCoordinatesInput, weatherDataInput) {
+    dayChose.innerHTML = today.format("dddd");
+dateContainer.innerHTML = today.format('dddd, MMMM D YYYY');
     mainLocation.innerHTML = geoCoordinatesInput.results[0].name + " (" + geoCoordinatesInput.results[0].admin1 + "), "+ geoCoordinatesInput.results[0].country;
     console.log(geoCoordinatesInput.results[0].name)
     localStorage.setItem("lastLocationSearched", (geoCoordinatesInput.results[0].name + ", " + geoCoordinatesInput.results[0].admin1 + ", "+ geoCoordinatesInput.results[0].country));
@@ -160,7 +161,7 @@ async function initialDataLoad() {
     windSpeedUnitKmCheck.style.visibility= htmlGeneratorObject.returnWindSpeedStatus(selectedSpeed)[0];
         currentSpeedUnit.innerHTML = htmlGeneratorObject.returnWindSpeedStatus(selectedSpeed)[2];
 }
-
+fullPageLoadingScreen();
 initialDataLoad();
 
 // search bar functionaluity
@@ -208,6 +209,7 @@ if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searc
    recentSearches.style.display ="block";
    recentSearchOptions.forEach((recentSearchOption)=>{
     recentSearchOption.addEventListener("click", async ()=>{
+        fullPageLoadingScreen();
           geoCoordinates = await  weatherDataObject.retrieveCoordinates(recentSearchOption.innerHTML);
   weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
@@ -226,6 +228,7 @@ searchBar.addEventListener("keydown", async (event)=>{
     let selectedPrecip =  localStorage.getItem("selectedPrecip");
 if (event.code == "Enter") {
     console.log("hi");
+    fullPageLoadingScreen();
   geoCoordinates = await  weatherDataObject.retrieveCoordinates(searchValue);
   weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
@@ -239,7 +242,8 @@ searchButton.addEventListener("click", async ()=>{
     let selectedSpeed = localStorage.getItem("selectedSpeed");
     let selectedPrecip =  localStorage.getItem("selectedPrecip");
     console.log("this is")
-     const geoCoordinates = await  weatherDataObject.retrieveCoordinates(searchValue);
+    fullPageLoadingScreen();
+    geoCoordinates = await  weatherDataObject.retrieveCoordinates(searchValue);
     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
   loadDataToView(geoCoordinates, weatherLocationData);
@@ -282,6 +286,7 @@ tempUnit.addEventListener("click", async ()=>{
     let selectedTemp = localStorage.getItem("selectedTemp");
     let selectedSpeed = localStorage.getItem("selectedSpeed");
      let selectedPrecip =  localStorage.getItem("selectedPrecip");
+     fullPageLoadingScreen();
     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
@@ -296,6 +301,7 @@ tempUnitFahrenheit.addEventListener("click", async ()=>{
     let selectedTemp = localStorage.getItem("selectedTemp");
     let selectedSpeed = localStorage.getItem("selectedSpeed");
      let selectedPrecip =  localStorage.getItem("selectedPrecip");
+     fullPageLoadingScreen();
     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
@@ -309,6 +315,7 @@ windSpeedUnitKm.addEventListener("click", async()=>{
     let selectedSpeed = localStorage.getItem("selectedSpeed");
       let selectedTemp = localStorage.getItem("selectedTemp");
        let selectedPrecip =  localStorage.getItem("selectedPrecip");
+       fullPageLoadingScreen();
     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
@@ -321,6 +328,7 @@ windSpeedUnitMiles.addEventListener("click", async()=>{
     let selectedSpeed = localStorage.getItem("selectedSpeed");
       let selectedTemp = localStorage.getItem("selectedTemp");
        let selectedPrecip =  localStorage.getItem("selectedPrecip");
+       fullPageLoadingScreen();
     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
@@ -333,6 +341,7 @@ precipMM.addEventListener("click", async()=>{
     let selectedPrecip =  localStorage.getItem("selectedPrecip");
      let selectedSpeed = localStorage.getItem("selectedSpeed");
       let selectedTemp = localStorage.getItem("selectedTemp");
+      fullPageLoadingScreen();
       weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
@@ -345,6 +354,7 @@ precipInch.addEventListener("click", async()=>{
     let selectedPrecip =  localStorage.getItem("selectedPrecip");
      let selectedSpeed = localStorage.getItem("selectedSpeed");
       let selectedTemp = localStorage.getItem("selectedTemp");
+      fullPageLoadingScreen();
       weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
@@ -368,6 +378,7 @@ imperialMetric.addEventListener("click", async ()=>{
     selectedTemp = localStorage.getItem("selectedTemp");
     selectedSpeed = localStorage.getItem("selectedSpeed");
       selectedPrecip =  localStorage.getItem("selectedPrecip");
+      fullPageLoadingScreen();
     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
     } else if (imperialMetric.innerHTML=="Switch to Imperial") {
          imperialMetric.innerHTML = "Switch to Metric";
@@ -383,7 +394,25 @@ imperialMetric.addEventListener("click", async ()=>{
     selectedTemp = localStorage.getItem("selectedTemp");
     selectedSpeed = localStorage.getItem("selectedSpeed");
      selectedPrecip =  localStorage.getItem("selectedPrecip");
+     fullPageLoadingScreen();
      weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
     }
      loadDataToView(geoCoordinates, weatherLocationData);
 })
+
+function fullPageLoadingScreen() {
+    dateContainer.innerHTML =" ";
+    mainLocation.innerHTML=" ";
+    currentIcon.setAttribute("src", "");
+    currentIcon.setAttribute("src", "");
+    currentTemp.innerHTML=" ";
+    feelsLike.innerHTML = "-";
+    currentHumidity.innerHTML="-";
+     currentPrecipitation.innerHTML ="-";
+     currentWindSpeed.innerHTML="-";
+     currentSpeedUnit .innerHTML=" ";
+     currentPrecipUnit.innerHTML=" ";
+     dailyItems.innerHTML = htmlGeneratorObject.returnDailyHTMLoadState();
+dayChose.innerHTML="-";
+hourlyItems.innerHTML= htmlGeneratorObject.returnHourlyHTMLoadState();
+}
