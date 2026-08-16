@@ -227,12 +227,15 @@ width: 88%;
 .recent-search {
         display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 5px;
     color: #fff;
     font-size: var(--step--1);
      margin: 4px;
      border-radius: 10px;
+}
+
+.load-state-icon {
+margin-right: 10px;
 }
 
 .recent-search:hover {
@@ -262,6 +265,7 @@ width: 88%;
     background-color: hsl(233, 67%, 56%);
 
 }
+
 
 .stats-grid {
  display: grid;

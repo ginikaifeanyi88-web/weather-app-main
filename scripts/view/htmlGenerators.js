@@ -257,7 +257,7 @@ returnTempStatus(selectedTemp) {
 }
 
 returnSearchOptionContainersLoadState() {
-  let  recentSearchesHTML= `<p class="recent-search">Search in progress...</p>`;
+  let  recentSearchesHTML= `<p class="recent-search"><img class="load-state-icon" src="assets/images/icon-loading.svg" alt="logo">Search in progress...</p>`;
   return recentSearchesHTML;
 }
 
