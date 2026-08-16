@@ -169,6 +169,17 @@ body {
     margin-top: 37px;
 }
 
+.no_results {
+    margin: auto;
+    margin-top: 20px;
+}
+
+.no_results_para {
+    color: #fff;
+    font-size: var(--step-0);
+    font-weight: bold;
+}
+
 .icon-error{
     width: 30px;
 }

@@ -53,7 +53,9 @@ async retrieveCoordinates(searchValue) {
     try {
    const result=  await this.getGeoData(searchValue);
    
-   console.log(result);
+ if (result.results == undefined) {
+    window.location.href ="noResults.html";
+ }
    return result;
     } catch(error) {
         console.log("Unexpected error. Try again later")
