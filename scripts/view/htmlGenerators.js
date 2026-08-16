@@ -123,32 +123,24 @@ let weatherCodeArray;
     if (today.format("dddd") == "Monday") {
             hourlyTempArray = weatherData.hourly.temperature_2m.slice(168, 336);
             weatherCodeArray = weatherData.hourly.weather_code.slice(168, 336);
-            console.log(hourlyTempArray);
         } else if (today.format("dddd") == "Tuesday") {
             hourlyTempArray = weatherData.hourly.temperature_2m.slice(144, (144+168));
             weatherCodeArray = weatherData.hourly.weather_code.slice(144, (144+168));
-            console.log(hourlyTempArray);
         } else if (today.format("dddd") == "Wednesday") {
              hourlyTempArray = weatherData.hourly.temperature_2m.slice(120, (120+168));
              weatherCodeArray = weatherData.hourly.weather_code.slice(120, (120+168));
-            console.log(hourlyTempArray);
         } else if  (today.format("dddd") == "Thursday") {
             hourlyTempArray = weatherData.hourly.temperature_2m.slice(96, (96+168));
             weatherCodeArray = weatherData.hourly.weather_code.slice(96, (96+168));
-            console.log(hourlyTempArray);
-            console.log(weatherCodeArray);
         } else if  (today.format("dddd") == "Friday") {
             hourlyTempArray = weatherData.hourly.temperature_2m.slice(72, (72+168));
             weatherCodeArray = weatherData.hourly.weather_code.slice(72, (72+168));
-            console.log(hourlyTempArray);
         } else if (today.format("dddd") == "Saturday")  {
             hourlyTempArray = weatherData.hourly.temperature_2m.slice(48, (48+168));
             weatherCodeArray = weatherData.hourly.weather_code.slice(48, (48+168));
-            console.log(hourlyTempArray);
         } else if  (today.format("dddd") == "Sunday")  {
             hourlyTempArray = weatherData.hourly.temperature_2m.slice(24, (24+168));
             weatherCodeArray = weatherData.hourly.weather_code.slice(24, (24+168));
-            console.log(hourlyTempArray);
         }
 
          if (dayChosen=="Monday") {

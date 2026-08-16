@@ -32,7 +32,6 @@ unitsMenu.addEventListener("mouseout", ()=>{
 
 unitChoices.forEach((unitChoice)=>{
     unitChoice.addEventListener("click", ()=>{
-        console.log("elo")
     })
 })
 
@@ -86,7 +85,6 @@ function loadDataToView(geoCoordinatesInput, weatherDataInput) {
     dayChose.innerHTML = today.format("dddd");
 dateContainer.innerHTML = today.format('dddd, MMMM D YYYY');
     mainLocation.innerHTML = geoCoordinatesInput.results[0].name + " (" + geoCoordinatesInput.results[0].admin1 + "), "+ geoCoordinatesInput.results[0].country;
-    console.log(geoCoordinatesInput.results[0].name)
     localStorage.setItem("lastLocationSearched", (geoCoordinatesInput.results[0].name + ", " + geoCoordinatesInput.results[0].admin1 + ", "+ geoCoordinatesInput.results[0].country));
     currentTemp.innerHTML =Math.round(weatherDataInput.daily.temperature_2m_max[7])+"°";
     currentIcon.setAttribute("src", `/assets/images/${htmlGeneratorObject.findWeatherCode(weatherDataInput.daily.weather_code[7])}.webp`);
@@ -149,7 +147,6 @@ async function initialDataLoad() {
         imperialMetric.innerHTML = "Switch to Imperial";
      }
      geoCoordinates = await  weatherDataObject.retrieveCoordinates(lastLocationSearched);
-     console.log(selectedTemp);
      weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
      loadDataToView(geoCoordinates, weatherLocationData);
      precipMMCheck.style.visibility =htmlGeneratorObject.returnPrecipitationStatus(selectedPrecip)[0];
@@ -179,7 +176,6 @@ searchBar.addEventListener("click", ()=>{
 let recentSearchOptions = document.querySelectorAll(".recent-search");
 recentSearchOptions.forEach((recentSearchOption)=>{
     recentSearchOption.addEventListener("click", ()=>{
-        console.log("scooby dooby doo");
         recentSearches.style.display = "none";
     })
 })
@@ -198,7 +194,6 @@ if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searc
     }
     
    })
-   console.log(geoCoordinatesSearch);
   
      recentSearches.innerHTML= htmlGeneratorObject.returnSearchOptionContainers(geoCoordinatesSearch);
    
@@ -216,7 +211,6 @@ if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searc
           geoCoordinates = await  weatherDataObject.retrieveCoordinates(recentSearchOption.innerHTML);
   weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   
-  console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
         recentSearches.style.display = "none";
         
@@ -231,11 +225,9 @@ searchBar.addEventListener("keydown", async (event)=>{
     let selectedSpeed = localStorage.getItem("selectedSpeed");
     let selectedPrecip =  localStorage.getItem("selectedPrecip");
 if (event.code == "Enter") {
-    console.log("hi");
     fullPageLoadingScreen();
   geoCoordinates = await  weatherDataObject.retrieveCoordinates(searchValue);
   weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
-  console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 }
 })
@@ -245,11 +237,9 @@ searchButton.addEventListener("click", async ()=>{
     let selectedTemp = localStorage.getItem("selectedTemp");
     let selectedSpeed = localStorage.getItem("selectedSpeed");
     let selectedPrecip =  localStorage.getItem("selectedPrecip");
-    console.log("this is")
     fullPageLoadingScreen();
     geoCoordinates = await  weatherDataObject.retrieveCoordinates(searchValue);
     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
-  console.log(weatherLocationData);
   loadDataToView(geoCoordinates, weatherLocationData);
 })
 
@@ -269,7 +259,6 @@ body.addEventListener("click", (event)=>{
 
     } else {
     recentSearches.style.display = "none";
-    console.log("???");
     unitsMenu.style.display ="none";
     hourlyMenu.style.display ="none";
     }
@@ -292,7 +281,6 @@ tempUnit.addEventListener("click", async ()=>{
      let selectedPrecip =  localStorage.getItem("selectedPrecip");
      fullPageLoadingScreen();
     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
-  console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 
 })
@@ -307,7 +295,6 @@ tempUnitFahrenheit.addEventListener("click", async ()=>{
      let selectedPrecip =  localStorage.getItem("selectedPrecip");
      fullPageLoadingScreen();
     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
-  console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 
 })
@@ -321,7 +308,6 @@ windSpeedUnitKm.addEventListener("click", async()=>{
        let selectedPrecip =  localStorage.getItem("selectedPrecip");
        fullPageLoadingScreen();
     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
-  console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 })
 
@@ -334,7 +320,6 @@ windSpeedUnitMiles.addEventListener("click", async()=>{
        let selectedPrecip =  localStorage.getItem("selectedPrecip");
        fullPageLoadingScreen();
     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
-  console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 })
 
@@ -347,7 +332,6 @@ precipMM.addEventListener("click", async()=>{
       let selectedTemp = localStorage.getItem("selectedTemp");
       fullPageLoadingScreen();
       weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
-  console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 })
 
@@ -360,7 +344,6 @@ precipInch.addEventListener("click", async()=>{
       let selectedTemp = localStorage.getItem("selectedTemp");
       fullPageLoadingScreen();
       weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
-  console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 })
 

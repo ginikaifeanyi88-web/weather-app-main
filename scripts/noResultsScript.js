@@ -26,7 +26,6 @@ searchBar.addEventListener("click", ()=>{
 let recentSearchOptions = document.querySelectorAll(".recent-search");
 recentSearchOptions.forEach((recentSearchOption)=>{
     recentSearchOption.addEventListener("click", ()=>{
-        console.log("scooby dooby doo");
         recentSearches.style.display = "none";
     })
 })
@@ -45,7 +44,6 @@ if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searc
     }
     
    })
-   console.log(geoCoordinatesSearch);
   
      recentSearches.innerHTML= htmlGeneratorObject.returnSearchOptionContainers(geoCoordinatesSearch);
    
@@ -63,7 +61,6 @@ if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searc
           geoCoordinates = await  weatherDataObject.retrieveCoordinates(recentSearchOption.innerHTML);
   weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   localStorage.setItem("lastLocationSearched", (geoCoordinates.results[0].name + ", " + geoCoordinates.results[0].admin1 + ", "+ geoCoordinates.results[0].country));
-  console.log(weatherLocationData);
         recentSearches.style.display = "none";
         window.location.href ="index.html";
         
@@ -78,11 +75,9 @@ searchBar.addEventListener("keydown", async (event)=>{
     let selectedSpeed = localStorage.getItem("selectedSpeed");
     let selectedPrecip =  localStorage.getItem("selectedPrecip");
 if (event.code == "Enter") {
-    console.log("hi");
   geoCoordinates = await  weatherDataObject.retrieveCoordinates(searchValue);
   weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   localStorage.setItem("lastLocationSearched", (geoCoordinates.results[0].name + ", " + geoCoordinates.results[0].admin1 + ", "+ geoCoordinates.results[0].country));
-  console.log(weatherLocationData);
    window.location.href ="index.html";
 }
 })
@@ -92,11 +87,9 @@ searchButton.addEventListener("click", async ()=>{
     let selectedTemp = localStorage.getItem("selectedTemp");
     let selectedSpeed = localStorage.getItem("selectedSpeed");
     let selectedPrecip =  localStorage.getItem("selectedPrecip");
-    console.log("this is")
     geoCoordinates = await  weatherDataObject.retrieveCoordinates(searchValue);
     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
     localStorage.setItem("lastLocationSearched", (geoCoordinates.results[0].name + ", " + geoCoordinates.results[0].admin1 + ", "+ geoCoordinates.results[0].country));
-  console.log(weatherLocationData);
  window.location.href ="index.html";
 })
 
@@ -107,8 +100,5 @@ body.addEventListener("click", (event)=>{
 
     } else {
     recentSearches.style.display = "none";
-    console.log("???");
-    // unitsMenu.style.display ="none";
-    // hourlyMenu.style.display ="none";
     }
 })
