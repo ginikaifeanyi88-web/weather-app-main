@@ -55,7 +55,7 @@ Users should be able to:
 
 ### What I learned
 
-This has been a long time coming, but I have finally gotten the hang of HTML, CSS, and JS and have profficiency in all three. This was without a doubt the most heavy project so far from frontend mentor. I learned about the model-view-controller architecture, object-oriented programming, and classes, and integrated those concepts into this project. I also learned about fetch, API, using the backend, and also touched lightly on Node.JS and Browserify. I also now feel comfortable dabbling in other programming languages such as C# and Python.
+This has been a long time coming, but I have finally gotten the hang of HTML, CSS, and JS and have profficiency in all three. This was without a doubt the most heavy project so far from frontend mentor. I learned about the model-view-controller architecture, object-oriented programming, and classes, and integrated those concepts into this project. I also learned about fetch, API, using the backend, and also touched lightly on Node.JS and Browserify. I now feel comfortable dabbling in other programming languages such as C# and Python.
 
 ### Continued development
 
@@ -69,6 +69,7 @@ As for what is upcoming for myself, I am probably going to learn about the backe
 
 - [SuperSimpleDev](https://www.youtube.com/watch?v=EerdGm-ehJQ) - SuperSimpleDev's JavaScript course it what to took me from basic level javascript skills to near mastery within a two weeks or so. Highly recommend.
 - [Net Ninja](https://www.youtube.com/watch?v=iWOYAxlnaww) - He is the reason I am skilled in HTML and CSS. The first six tutorials in in his JS course (which are free on YouTube) gave me a good foundation to go into SuperSimpleDev's course and allowed me to skip a lot of the beginning tutorials of the latter.
+- Not really a resource but applying to a bunch of web development jobs and taking on the coding tests as exercises helped a ton!
 
 ## Author
 
