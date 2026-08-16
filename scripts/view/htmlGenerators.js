@@ -256,6 +256,11 @@ returnTempStatus(selectedTemp) {
    return recentSearchesHTML;
 }
 
+returnSearchOptionContainersLoadState() {
+  let  recentSearchesHTML= `<p class="recent-search">Search in progress...</p>`;
+  return recentSearchesHTML;
+}
+
 returnDailyHTMLoadState() {
     let returnedHTML=` <div class="daily-forecast-item">
     <p class="day-of-week">Mon</p>

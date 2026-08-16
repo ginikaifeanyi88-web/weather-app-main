@@ -117,7 +117,7 @@ dateContainer.innerHTML = today.format('dddd, MMMM D YYYY');
     dailyItems.innerHTML = htmlGeneratorObject.generateDailyHTML(dailyMaxTemps,dailyMinTemps,theWeatherCode,today);
 }
 
-// Initial data loading
+// Initial data loading function
 const imperialMetric = document.querySelector(".js-imperial-metric");
   let weatherLocationData = {};
   let geoCoordinates = {};
@@ -161,6 +161,8 @@ async function initialDataLoad() {
     windSpeedUnitKmCheck.style.visibility= htmlGeneratorObject.returnWindSpeedStatus(selectedSpeed)[0];
         currentSpeedUnit.innerHTML = htmlGeneratorObject.returnWindSpeedStatus(selectedSpeed)[2];
 }
+
+// Initial data loading 
 fullPageLoadingScreen();
 initialDataLoad();
 
@@ -188,6 +190,7 @@ searchBar.addEventListener("keydown", async (event)=>{
     let selectedSpeed = localStorage.getItem("selectedSpeed");
      let selectedPrecip =  localStorage.getItem("selectedPrecip");
 if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searchValue))) {
+    recentSearches.innerHTML = htmlGeneratorObject.returnSearchOptionContainersLoadState();
    let geoCoordinatesSearchInitial = await  weatherDataObject.getGeoDataSearch(searchValue);
    let geoCoordinatesSearch = geoCoordinatesSearchInitial.results.filter((geoResult)=>{
     if (geoResult.admin1 !== undefined) {
