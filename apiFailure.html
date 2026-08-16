@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="styles/styles.css">
+  <title>Frontend Mentor | Weather app failure page</title>
+
+</head>
+<body>
+
+<div class="header">
+  <img src="assets/images/logo.svg" alt="logo">
+
+  <div class="units-container">
+   <div class="units-button" tabindex="0">
+    <i class="fa-solid fa-gear gear"></i>
+    <p>Units</p>
+    <i class="fa-solid fa-chevron-down down  units-menu-drop-icon" ></i>
+  </div>
+  <div class="units-menu">
+    <div class="units-choice js-imperial-metric">Switch to Imperial</div>
+<div class="unit-type temp-unit-type">
+  <p class="unit-type-title">
+  Temperature
+  </p>
+<p class="unit-type-choice js-temp-celsius">
+  Celsius (°C) <i class="fa-solid fa-check js-temp-celsius-check"></i>
+  </p>
+  <p class="unit-type-choice js-temp-fahrenheit">
+  Fahrenheit (°F) <i class="fa-solid fa-check js-temp-fahrenheit-check"></i>
+  </p>
+  </div>
+<div class="unit-type wind-speed-unit-type">
+  <p class="unit-type-title">
+  Wind Speed
+  </p>
+ <p class="unit-type-choice js-speed-km">
+  km/h <i class="fa-solid fa-check js-speed-km-check"></i>
+  </p>
+  <p class="unit-type-choice js-speed-miles">
+  mph <i class="fa-solid fa-check js-speed-miles-check"></i>
+  </p>
+</div>
+<div class="unit-type">
+  <p class="unit-type-title">
+  Precipitation
+</p>
+<p class="unit-type-choice js-precip-mm">
+  Millimeters (mm) <i class="fa-solid fa-check js-precip-mm-check"></i>
+  </p>
+  <p class="unit-type-choice js-precip-inch">
+  Inches (in) <i class="fa-solid fa-check js-precip-inch-check"></i>
+  </p>
+  </div>
+  </div>
+  </div>
+</div>
+
+<div class="title">
+  <div class="welcome-message">
+      <img src="assets/images/icon-error.svg" alt="icon-error" class="icon-error">
+  <h1>Something went wrong</h1>
+  </div>
+<p class="retry-message">We couldn't connect to the server (API error). Try again in a few moments.</p>
+<div class="retry-button">
+    <img src="/assets/images/icon-retry.svg" alt="icon-retry" class="icon-retry">
+    <p class="retry-button-txt">Retry</p>
+</div>
+
+  </div>
+
+
+
+  <footer class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. 
+    Coded by <a href="https://www.frontendmentor.io/profile/ginikaifeanyi88-web">Ginika Okeke</a>.
+  </footer>
+  <script src="scripts/apiError.js"></script>
+</body>
+</html>

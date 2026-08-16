@@ -215,6 +215,7 @@ if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searc
         fullPageLoadingScreen();
           geoCoordinates = await  weatherDataObject.retrieveCoordinates(recentSearchOption.innerHTML);
   weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+  
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
         recentSearches.style.display = "none";
