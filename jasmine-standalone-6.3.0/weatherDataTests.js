@@ -1,4 +1,5 @@
-import { getGeoData, retrieveCoordinates, getWeatherData } from "../scripts/data/weatherData.js";
+import {weatherData } from "../scripts/data/weatherData.js";
+const weatherTestDataObject = new weatherData();
 describe("test suite: Getting weather data", ()=>{
     it("returns geo weather",  async ()=>{
 async function  getBerlinData() {
@@ -9,9 +10,10 @@ async function  getBerlinData() {
     
 }
 async function myCode() {
+    
     const searchValue = "Berlin";
-         const geoCoordinates = await  retrieveCoordinates(searchValue);
-    const weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude);
+         const geoCoordinates = await  weatherTestDataObject.retrieveCoordinates(searchValue);
+    const weatherLocationData = await weatherTestDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, "celsius", "kmh", "mm");
   return weatherLocationData;
 }
 const berlinData = await getBerlinData();

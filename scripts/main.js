@@ -2,11 +2,14 @@
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { Dropdown} from "./utilities/dropDown.js";
 import { isAlphaOrComma } from './utilities/otherUtilites.js';
- import { getGeoData, retrieveCoordinates, getWeatherData, getGeoDataSearch } from "./data/weatherData.js";
+ import { weatherData } from "./data/weatherData.js";
  import { findWeatherCode, generateHourlyHTML, generateDailyHTML, generateHourlyAfterHtml, returnWindSpeedStatus, returnPrecipitationStatus, returnTempStatus, returnSearchOptionContainers} from './view/htmlGenerators.js';
 
+ // class object declarations
+ const dropDown = new Dropdown();
+const weatherDataObject = new weatherData();
+
 // unitsMenu functionality
-const dropDown = new Dropdown();
 const dropDownIcon = document.querySelector(".units-button");
 const unitsMenu = document.querySelector(".units-menu");
 const unitChoices = document.querySelectorAll(".unit-type-choice");
@@ -143,9 +146,9 @@ async function initialDataLoad() {
      } else {
         imperialMetric.innerHTML = "Switch to Imperial";
      }
-     geoCoordinates = await  retrieveCoordinates(lastLocationSearched);
+     geoCoordinates = await  weatherDataObject.retrieveCoordinates(lastLocationSearched);
      console.log(selectedTemp);
-     weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
      loadDataToView(geoCoordinates, weatherLocationData);
      precipMMCheck.style.visibility =returnPrecipitationStatus(selectedPrecip)[0];
     precipInchCheck.style.visibility =returnPrecipitationStatus(selectedPrecip)[1];
@@ -183,7 +186,7 @@ searchBar.addEventListener("keydown", async (event)=>{
     let selectedSpeed = localStorage.getItem("selectedSpeed");
      let selectedPrecip =  localStorage.getItem("selectedPrecip");
 if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searchValue))) {
-   let geoCoordinatesSearchInitial = await  getGeoDataSearch(searchValue);
+   let geoCoordinatesSearchInitial = await  weatherDataObject.getGeoDataSearch(searchValue);
    let geoCoordinatesSearch = geoCoordinatesSearchInitial.results.filter((geoResult)=>{
     if (geoResult.admin1 !== undefined) {
         return  geoResult;
@@ -204,8 +207,8 @@ if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searc
    recentSearches.style.display ="block";
    recentSearchOptions.forEach((recentSearchOption)=>{
     recentSearchOption.addEventListener("click", async ()=>{
-          geoCoordinates = await  retrieveCoordinates(recentSearchOption.innerHTML);
-  weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+          geoCoordinates = await  weatherDataObject.retrieveCoordinates(recentSearchOption.innerHTML);
+  weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
         recentSearches.style.display = "none";
@@ -222,8 +225,8 @@ searchBar.addEventListener("keydown", async (event)=>{
     let selectedPrecip =  localStorage.getItem("selectedPrecip");
 if (event.code == "Enter") {
     console.log("hi");
-  geoCoordinates = await  retrieveCoordinates(searchValue);
-  weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+  geoCoordinates = await  weatherDataObject.retrieveCoordinates(searchValue);
+  weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 }
@@ -235,8 +238,8 @@ searchButton.addEventListener("click", async ()=>{
     let selectedSpeed = localStorage.getItem("selectedSpeed");
     let selectedPrecip =  localStorage.getItem("selectedPrecip");
     console.log("this is")
-     const geoCoordinates = await  retrieveCoordinates(searchValue);
-    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+     const geoCoordinates = await  weatherDataObject.retrieveCoordinates(searchValue);
+    weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
   loadDataToView(geoCoordinates, weatherLocationData);
 })
@@ -278,7 +281,7 @@ tempUnit.addEventListener("click", async ()=>{
     let selectedTemp = localStorage.getItem("selectedTemp");
     let selectedSpeed = localStorage.getItem("selectedSpeed");
      let selectedPrecip =  localStorage.getItem("selectedPrecip");
-    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+    weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 
@@ -292,7 +295,7 @@ tempUnitFahrenheit.addEventListener("click", async ()=>{
     let selectedTemp = localStorage.getItem("selectedTemp");
     let selectedSpeed = localStorage.getItem("selectedSpeed");
      let selectedPrecip =  localStorage.getItem("selectedPrecip");
-    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+    weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 
@@ -305,7 +308,7 @@ windSpeedUnitKm.addEventListener("click", async()=>{
     let selectedSpeed = localStorage.getItem("selectedSpeed");
       let selectedTemp = localStorage.getItem("selectedTemp");
        let selectedPrecip =  localStorage.getItem("selectedPrecip");
-    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+    weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 })
@@ -317,7 +320,7 @@ windSpeedUnitMiles.addEventListener("click", async()=>{
     let selectedSpeed = localStorage.getItem("selectedSpeed");
       let selectedTemp = localStorage.getItem("selectedTemp");
        let selectedPrecip =  localStorage.getItem("selectedPrecip");
-    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+    weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 })
@@ -329,7 +332,7 @@ precipMM.addEventListener("click", async()=>{
     let selectedPrecip =  localStorage.getItem("selectedPrecip");
      let selectedSpeed = localStorage.getItem("selectedSpeed");
       let selectedTemp = localStorage.getItem("selectedTemp");
-      weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+      weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 })
@@ -341,7 +344,7 @@ precipInch.addEventListener("click", async()=>{
     let selectedPrecip =  localStorage.getItem("selectedPrecip");
      let selectedSpeed = localStorage.getItem("selectedSpeed");
       let selectedTemp = localStorage.getItem("selectedTemp");
-      weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+      weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
   console.log(weatherLocationData);
     loadDataToView(geoCoordinates, weatherLocationData);
 })
@@ -364,7 +367,7 @@ imperialMetric.addEventListener("click", async ()=>{
     selectedTemp = localStorage.getItem("selectedTemp");
     selectedSpeed = localStorage.getItem("selectedSpeed");
       selectedPrecip =  localStorage.getItem("selectedPrecip");
-    weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+    weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
     } else if (imperialMetric.innerHTML=="Switch to Imperial") {
          imperialMetric.innerHTML = "Switch to Metric";
          tempUnitCheck.style.visibility="hidden";
@@ -379,7 +382,7 @@ imperialMetric.addEventListener("click", async ()=>{
     selectedTemp = localStorage.getItem("selectedTemp");
     selectedSpeed = localStorage.getItem("selectedSpeed");
      selectedPrecip =  localStorage.getItem("selectedPrecip");
-     weatherLocationData = await getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
+     weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
     }
      loadDataToView(geoCoordinates, weatherLocationData);
 })
