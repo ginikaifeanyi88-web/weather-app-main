@@ -3,11 +3,12 @@ import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { Dropdown} from "./utilities/dropDown.js";
 import { isAlphaOrComma } from './utilities/otherUtilites.js';
  import { weatherData } from "./data/weatherData.js";
- import { findWeatherCode, generateHourlyHTML, generateDailyHTML, generateHourlyAfterHtml, returnWindSpeedStatus, returnPrecipitationStatus, returnTempStatus, returnSearchOptionContainers} from './view/htmlGenerators.js';
+ import { htmlGeneratorsClass} from './view/htmlGenerators.js';
 
  // class object declarations
  const dropDown = new Dropdown();
 const weatherDataObject = new weatherData();
+const htmlGeneratorObject = new htmlGeneratorsClass();
 
 // unitsMenu functionality
 const dropDownIcon = document.querySelector(".units-button");
@@ -87,32 +88,32 @@ function loadDataToView(geoCoordinatesInput, weatherDataInput) {
     console.log(geoCoordinatesInput.results[0].name)
     localStorage.setItem("lastLocationSearched", geoCoordinatesInput.results[0].name);
     currentTemp.innerHTML =Math.round(weatherDataInput.daily.temperature_2m_max[7])+"°";
-    currentIcon.setAttribute("src", `/assets/images/${findWeatherCode(weatherDataInput.daily.weather_code[7])}.webp`);
+    currentIcon.setAttribute("src", `/assets/images/${htmlGeneratorObject.findWeatherCode(weatherDataInput.daily.weather_code[7])}.webp`);
     feelsLike.innerHTML = Math.round(weatherDataInput.current.temperature_2m)+"°";
     currentHumidity.innerHTML = Math.round(weatherDataInput.current.relative_humidity_2m) + "%";
     currentWindSpeed.innerHTML = Math.round(weatherDataInput.current.wind_speed_10m);
      let selectedSpeed = localStorage.getItem("selectedSpeed");
-        windSpeedUnitMilesCheck.style.visibility= returnWindSpeedStatus(selectedSpeed)[1];
-    windSpeedUnitKmCheck.style.visibility= returnWindSpeedStatus(selectedSpeed)[0];
-        currentSpeedUnit.innerHTML = returnWindSpeedStatus(selectedSpeed)[2];
+        windSpeedUnitMilesCheck.style.visibility= htmlGeneratorObject.returnWindSpeedStatus(selectedSpeed)[1];
+    windSpeedUnitKmCheck.style.visibility= htmlGeneratorObject.returnWindSpeedStatus(selectedSpeed)[0];
+        currentSpeedUnit.innerHTML = htmlGeneratorObject.returnWindSpeedStatus(selectedSpeed)[2];
    
     currentPrecipitation.innerHTML = Math.round(weatherDataInput.current.precipitation);
        let selectedPrecip =  localStorage.getItem("selectedPrecip");
-        precipMMCheck.style.visibility =returnPrecipitationStatus(selectedPrecip)[0];
-    precipInchCheck.style.visibility =returnPrecipitationStatus(selectedPrecip)[1];
-        currentPrecipUnit.innerHTML = returnPrecipitationStatus(selectedPrecip)[2];
+        precipMMCheck.style.visibility =htmlGeneratorObject.returnPrecipitationStatus(selectedPrecip)[0];
+    precipInchCheck.style.visibility =htmlGeneratorObject.returnPrecipitationStatus(selectedPrecip)[1];
+        currentPrecipUnit.innerHTML = htmlGeneratorObject.returnPrecipitationStatus(selectedPrecip)[2];
  
     const dailyMaxTemps = weatherDataInput.daily.temperature_2m_max;
      const dailyMinTemps = weatherDataInput.daily.temperature_2m_min;
      const theWeatherCode = weatherDataInput.daily.weather_code;
     const hourlyTemps = weatherDataInput.hourly.temperature_2m;
      let selectedTemp = localStorage.getItem("selectedTemp");
-        tempUnitCheck.style.visibility=returnTempStatus(selectedTemp)[0];
-    tempUnitCheckFarenheit.style.visibility=returnTempStatus(selectedTemp)[1];
+        tempUnitCheck.style.visibility=htmlGeneratorObject.returnTempStatus(selectedTemp)[0];
+    tempUnitCheckFarenheit.style.visibility=htmlGeneratorObject.returnTempStatus(selectedTemp)[1];
     
     const hourlyCodes = weatherDataInput.hourly.weather_code;
-     hourlyItems.innerHTML = generateHourlyHTML(hourlyTemps, hourlyCodes, 168);
-    dailyItems.innerHTML = generateDailyHTML(dailyMaxTemps,dailyMinTemps,theWeatherCode,today);
+     hourlyItems.innerHTML = htmlGeneratorObject.generateHourlyHTML(hourlyTemps, hourlyCodes, 168);
+    dailyItems.innerHTML = htmlGeneratorObject.generateDailyHTML(dailyMaxTemps,dailyMinTemps,theWeatherCode,today);
 }
 
 // Initial data loading
@@ -150,14 +151,14 @@ async function initialDataLoad() {
      console.log(selectedTemp);
      weatherLocationData = await weatherDataObject.getWeatherData(geoCoordinates.results[0].latitude, geoCoordinates.results[0].longitude, selectedTemp, selectedSpeed, selectedPrecip);
      loadDataToView(geoCoordinates, weatherLocationData);
-     precipMMCheck.style.visibility =returnPrecipitationStatus(selectedPrecip)[0];
-    precipInchCheck.style.visibility =returnPrecipitationStatus(selectedPrecip)[1];
-        currentPrecipUnit.innerHTML = returnPrecipitationStatus(selectedPrecip)[2];
-         tempUnitCheck.style.visibility=returnTempStatus(selectedTemp)[0];
-    tempUnitCheckFarenheit.style.visibility=returnTempStatus(selectedTemp)[1];
-    windSpeedUnitMilesCheck.style.visibility= returnWindSpeedStatus(selectedSpeed)[1];
-    windSpeedUnitKmCheck.style.visibility= returnWindSpeedStatus(selectedSpeed)[0];
-        currentSpeedUnit.innerHTML = returnWindSpeedStatus(selectedSpeed)[2];
+     precipMMCheck.style.visibility =htmlGeneratorObject.returnPrecipitationStatus(selectedPrecip)[0];
+    precipInchCheck.style.visibility =htmlGeneratorObject.returnPrecipitationStatus(selectedPrecip)[1];
+        currentPrecipUnit.innerHTML = htmlGeneratorObject.returnPrecipitationStatus(selectedPrecip)[2];
+         tempUnitCheck.style.visibility=htmlGeneratorObject.returnTempStatus(selectedTemp)[0];
+    tempUnitCheckFarenheit.style.visibility=htmlGeneratorObject.returnTempStatus(selectedTemp)[1];
+    windSpeedUnitMilesCheck.style.visibility= htmlGeneratorObject.returnWindSpeedStatus(selectedSpeed)[1];
+    windSpeedUnitKmCheck.style.visibility= htmlGeneratorObject.returnWindSpeedStatus(selectedSpeed)[0];
+        currentSpeedUnit.innerHTML = htmlGeneratorObject.returnWindSpeedStatus(selectedSpeed)[2];
 }
 
 initialDataLoad();
@@ -195,7 +196,7 @@ if ((event.code !== "Enter") && (searchValue.length > 1) &&(isAlphaOrComma(searc
    })
    console.log(geoCoordinatesSearch);
   
-     recentSearches.innerHTML= returnSearchOptionContainers(geoCoordinatesSearch);
+     recentSearches.innerHTML= htmlGeneratorObject.returnSearchOptionContainers(geoCoordinatesSearch);
    
    recentSearchOptions = document.querySelectorAll(".recent-search");
     let l = 0;
@@ -249,7 +250,7 @@ for (let k=0;k<7;k++) {
     hourlyChoices[k].addEventListener("click", ()=>{
         let dayClicked = today.day(k+1)
         dayChose.innerHTML = dayClicked.format("dddd");
-         hourlyItems.innerHTML = generateHourlyAfterHtml(dayChose.innerHTML,weatherLocationData,today);
+         hourlyItems.innerHTML = htmlGeneratorObject.generateHourlyAfterHtml(dayChose.innerHTML,weatherLocationData,today);
     })
 }
 

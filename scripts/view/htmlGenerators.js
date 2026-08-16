@@ -1,5 +1,6 @@
-// Match weather code to icon
-export function findWeatherCode(weatherCode) {
+export class htmlGeneratorsClass {
+    // Match weather code to icon
+findWeatherCode(weatherCode) {
     let result ="";
     switch(weatherCode) {
         case 0:
@@ -91,7 +92,7 @@ export function findWeatherCode(weatherCode) {
 }
 
 // generate html for hourly forecast
-export function generateHourlyHTML(hourlyTemps, hourlyCodes, startingPoint) {
+ generateHourlyHTML(hourlyTemps, hourlyCodes, startingPoint) {
     let hourlHTML = ``;
     for (let j=startingPoint;j<startingPoint+24;j++) {
         let specificHour = "";
@@ -105,7 +106,7 @@ export function generateHourlyHTML(hourlyTemps, hourlyCodes, startingPoint) {
             specificHour = (j-(startingPoint+12))+ " PM";
         }
         hourlHTML += `  <div class="hourly-forecast-item">
-    <img src="assets/images/${findWeatherCode(hourlyCodes[j])}.webp" alt="hourly-forecast-img">
+    <img src="assets/images/${this.findWeatherCode(hourlyCodes[j])}.webp" alt="hourly-forecast-img">
     <p class="hour-of-day">${specificHour}</p>
     <p class="hourly-temp">${Math.round(hourlyTemps[j])}°</p>
   </div>`;
@@ -115,7 +116,7 @@ export function generateHourlyHTML(hourlyTemps, hourlyCodes, startingPoint) {
 
 // generate hourly html after clicking a day
 
-export function generateHourlyAfterHtml(dayChosen, weatherData, today) {
+generateHourlyAfterHtml(dayChosen, weatherData, today) {
     let hourlyTempArray;
 let weatherCodeArray;
     let htmlGenerated = ''
@@ -151,32 +152,32 @@ let weatherCodeArray;
         }
 
          if (dayChosen=="Monday") {
-                    htmlGenerated = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 0);
+                    htmlGenerated = this.generateHourlyHTML(hourlyTempArray, weatherCodeArray, 0);
                 } else if (dayChosen =="Tuesday"){
-                    htmlGenerated= generateHourlyHTML(hourlyTempArray, weatherCodeArray, 24);
+                    htmlGenerated= this.generateHourlyHTML(hourlyTempArray, weatherCodeArray, 24);
                 } else if  (dayChosen =="Wednesday"){
-                    htmlGenerated= generateHourlyHTML(hourlyTempArray, weatherCodeArray, 48);
+                    htmlGenerated= this.generateHourlyHTML(hourlyTempArray, weatherCodeArray, 48);
                 } else if (dayChosen=="Thursday"){
-                    htmlGenerated = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 72);
+                    htmlGenerated = this.generateHourlyHTML(hourlyTempArray, weatherCodeArray, 72);
                 } else if (dayChosen=="Friday") {
-                    htmlGenerated = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 96);
+                    htmlGenerated = this.generateHourlyHTML(hourlyTempArray, weatherCodeArray, 96);
                 } else if (dayChosen=="Saturday") {
-                    htmlGenerated = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 120);
+                    htmlGenerated = this.generateHourlyHTML(hourlyTempArray, weatherCodeArray, 120);
                 } else if  (dayChosen="Sunday") {
-                    htmlGenerated = generateHourlyHTML(hourlyTempArray, weatherCodeArray, 144);
+                    htmlGenerated = this.generateHourlyHTML(hourlyTempArray, weatherCodeArray, 144);
                 } 
 
     return htmlGenerated;
 }
 
 // generate html for daily forecast
-export function generateDailyHTML(dailyMaxTemps, dailyMinTemps, theWeatherCode, today) {
+generateDailyHTML(dailyMaxTemps, dailyMinTemps, theWeatherCode, today) {
     let dailyForecastHTML = ''
      for (let i=7;i<14;i++) {
             let dayOfWeek = today.add(i, 'days');
             dailyForecastHTML += `<div class="daily-forecast-item">
         <p class="day-of-week">${dayOfWeek.format('ddd')}</p>
-        <img src="assets/images/${findWeatherCode(theWeatherCode[i])}.webp" alt="tue-icon">
+        <img src="assets/images/${this.findWeatherCode(theWeatherCode[i])}.webp" alt="tue-icon">
         <div class="day-temperatures">
           <p class="max-temp">${Math.round(dailyMaxTemps[i])}°</p>
           <p class="min-tep">${Math.round(dailyMinTemps[i])}°</p>
@@ -188,7 +189,7 @@ export function generateDailyHTML(dailyMaxTemps, dailyMinTemps, theWeatherCode, 
 }
 
 // return status of units in local storage to add specific styles
-export function returnWindSpeedStatus(selectedSpeed) {
+ returnWindSpeedStatus(selectedSpeed) {
     let windSpeedMilesCheckValue;
     let windSpeedKmCheckValue;
     let currentSpeedUnitValue;
@@ -204,7 +205,7 @@ export function returnWindSpeedStatus(selectedSpeed) {
      return [windSpeedKmCheckValue, windSpeedMilesCheckValue, currentSpeedUnitValue];
 }
 
-export function returnPrecipitationStatus(selectedPrecip) {
+returnPrecipitationStatus(selectedPrecip) {
     let precipMMCheckValue;
     let precipInchCheckValue;
     let currentPrecipValue;
@@ -220,7 +221,7 @@ export function returnPrecipitationStatus(selectedPrecip) {
      return [precipMMCheckValue, precipInchCheckValue, currentPrecipValue];
 }
 
-export function returnTempStatus(selectedTemp) {
+returnTempStatus(selectedTemp) {
     let tempUnitCheckValue;
     let tempUnitCheckFarenheitValue;
     if (selectedTemp == "celsius") {
@@ -233,7 +234,7 @@ export function returnTempStatus(selectedTemp) {
      return [tempUnitCheckValue, tempUnitCheckFarenheitValue];
 }
 
-export function returnSearchOptionContainers(geoCoordinatesSearch) {
+ returnSearchOptionContainers(geoCoordinatesSearch) {
     let recentSearchesHTML;
      if (geoCoordinatesSearch.length ==4) {
     recentSearchesHTML= `<p class="recent-search">City name</p>
@@ -253,4 +254,7 @@ export function returnSearchOptionContainers(geoCoordinatesSearch) {
      recentSearchesHTML= ``;
    }
    return recentSearchesHTML;
+}
+
+
 }
