@@ -7,17 +7,13 @@ This is a solution to the [Weather app challenge on Frontend Mentor](https://www
 - [Overview](#overview)
   - [The challenge](#the-challenge)
   - [Screenshot](#screenshot)
-  - [Links](#links)
 - [My process](#my-process)
   - [Built with](#built-with)
   - [What I learned](#what-i-learned)
   - [Continued development](#continued-development)
+  - [What is next](#what-is-next)
   - [Useful resources](#useful-resources)
-  - [AI Collaboration](#ai-collaboration)
 - [Author](#author)
-- [Acknowledgments](#acknowledgments)
-
-**Note: Delete this note and update the table of contents based on what sections you keep.**
 
 ## Overview
 
@@ -65,33 +61,15 @@ This has been a long time coming, but I have finally gotten the hang of HTML, CS
 
 The CSS is admittedly more sloppy than I usually do it. I was so focused on the JavaScripts that I neglected perfecting the styles.As for what is upcoming for me, I am going to learn about the backend and Node.JS next, as well as starting a C# course. My next frontend project is probably going to be the speed typing test. I want to use these new JS skills to program something closer to a web game.
 
+### What is next
+
+As for what is upcoming for myself, I am probably going to learn about the backend and Node.JS as well as start course on either C# or Python. My next frontend mentor project is going to be the speed typing test because I want to use these new JS skills to program something closer to a web game. I am also likely going to start designing my own website and begin applying for my masters.
+
 ### Useful resources
 
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
-
-**Note: Delete this note and replace the list above with resources that helped you during the challenge. These could come in handy for anyone viewing your solution or for yourself when you look back on this project in the future.**
-
-### AI Collaboration
-
-Describe how you used AI tools (if any) during this project. This helps demonstrate your ability to work effectively with AI assistants.
-
-- What tools did you use (e.g., ChatGPT, Claude, GitHub Copilot)?
-- How did you use them (e.g., debugging, generating boilerplate, brainstorming solutions)?
-- What worked well? What didn't?
-
-**Note: Delete this note and the content above if you didn't use AI, or replace with your own experience.**
+- [SuperSimpleDev](https://www.youtube.com/watch?v=EerdGm-ehJQ) - SuperSimpleDev's JavaScript course it what to took me from basic level javascript skills to near mastery within a two weeks or so. Highly recommend.
+- [Net Ninja](https://www.youtube.com/watch?v=iWOYAxlnaww) - He is the reason I am skilled in HTML and CSS. The first six tutorials in in his JS course (which are free on YouTube) gave me a good foundation to go into SuperSimpleDev's course and allowed me to skip a lot of the beginning tutorials of the latter.
 
 ## Author
 
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
-
-**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
-
-## Acknowledgments
-
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
-
-**Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**
+- Frontend Mentor - [@ginikaifeanyi88-web](https://www.frontendmentor.io/profile/ginikaifeanyi88-web)
